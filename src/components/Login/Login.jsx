@@ -19,7 +19,6 @@ const Login = () => {
             setError("");
             setLoading(true);
             const result = await login(emailRef.current.value, passwordRef.current.value, adminIDRef.current.value);
-            console.log("Result: " + result);
             if (result === "") {
                 navigate("/");
             } else {

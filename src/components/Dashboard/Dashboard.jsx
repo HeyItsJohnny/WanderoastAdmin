@@ -3,7 +3,16 @@ import { Card, Button, Alert } from 'react-bootstrap';
 import { useAuth } from '../Contexts/AuthContext';
 import { Link,useNavigate } from 'react-router-dom';
 
+//Components
+import Topbar from "../NAVBars/TopBar";
+
+//Light/Dark Mode
+import { ColorModeContext, useMode } from '../../theme';
+import { CssBaseline, ThemeProvider } from '@mui/material';
+
 const Dashboard = () => {
+
+  const [theme, colorMode] = useMode();
 
   const [error, setError] = useState("");
   const { currentUser, logout } = useAuth();
@@ -21,6 +30,8 @@ const Dashboard = () => {
 
   return (
     <>
+    {/*
+    
       <Card>
         <Card.Body>
            <h2 className="text-center mb-4">Profile</h2>         
@@ -28,13 +39,23 @@ const Dashboard = () => {
            <strong>Email: </strong> {currentUser.email}
            <Link to="/updateProfile" className="btn btn-primary w-100 mt-3">
               Update Profile
-              HELLO WORL
            </Link>
         </Card.Body>
       </Card>
-      <div className='w-100 text-center mt-2'>
-          <Button variant="link" onClick={handleLogout}>Log Out</Button>
-      </div>
+    */}
+      <ColorModeContext.Provider value={colorMode}>
+        <ThemeProvider theme={theme}>
+          <div className="app">
+            <main className="content">
+              <Topbar />
+              
+                <Button variant="link" onClick={handleLogout}>Log Out</Button>
+              
+            </main>
+          </div>
+        </ThemeProvider>
+      </ColorModeContext.Provider>
+      
     </>
   )
 }
