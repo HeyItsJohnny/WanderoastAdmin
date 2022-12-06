@@ -28,6 +28,7 @@ const Dashboard = () => {
            <strong>Email: </strong> {currentUser.email}
            <Link to="/updateProfile" className="btn btn-primary w-100 mt-3">
               Update Profile
+              HELLO WORL
            </Link>
         </Card.Body>
       </Card>
