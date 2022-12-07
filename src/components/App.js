@@ -56,6 +56,16 @@ function App() {
                   <NewTextOrder />
                 </PrivateRoute>
               } />
+              <Route exact path="/orders" element={
+                <PrivateRoute>
+                  <Orders />
+                </PrivateRoute>
+              } />
+              <Route exact path="/subscriptions" element={
+                <PrivateRoute>
+                  <Subscriptions />
+                </PrivateRoute>
+              } />
               <Route path="/signup" element={<SignUp />} />
               <Route path="/login" element={<Login />} />
               <Route path="/forgotPassword" element={<ForgotPassword />} />

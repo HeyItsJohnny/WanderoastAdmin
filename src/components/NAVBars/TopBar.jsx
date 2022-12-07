@@ -5,20 +5,33 @@ import { ColorModeContext, tokens } from "../../theme";
 import InputBase from "@mui/material/InputBase";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
-import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
-import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import SearchIcon from "@mui/icons-material/Search";
+import LogoutIcon from '@mui/icons-material/Logout';
+import { useAuth } from '../Contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 
 const TopBar = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+
+  async function handleLogout() {
+    try {
+      await logout();
+      navigate("/login");
+    } catch(e) {
+      alert("Failed to logout: " + e);
+    }
+}
 
   return (
       <Box display="flex" justifyContent="space-between" p={2}>
         {/* SEARCH BAR */}
+        
         <Box 
           display="flex"  
           backgroundColor={colors.primary[400]} 
@@ -30,7 +43,7 @@ const TopBar = () => {
           </IconButton>
         </Box>
         {/* ICONS */}
-        <Box display="flex">
+        <Box display="justify-right">
           <IconButton onClick={colorMode.toggleColorMode}>
             {theme.palette.mode === "dark" ? (
               <DarkModeOutlinedIcon />
@@ -39,13 +52,11 @@ const TopBar = () => {
             )}
           </IconButton>
           <IconButton>
-            <NotificationsOutlinedIcon />
-          </IconButton>
-          <IconButton>
             <SettingsOutlinedIcon />
           </IconButton>
           <IconButton>
-            <PersonOutlinedIcon />
+            <LogoutIcon onClick={handleLogout}
+            />
           </IconButton>
         </Box>
       </Box>

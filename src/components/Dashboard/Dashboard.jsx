@@ -1,11 +1,9 @@
-import React, {useState} from 'react';
-import { Card, Button, Alert } from 'react-bootstrap';
-import { useAuth } from '../Contexts/AuthContext';
-import { Link,useNavigate } from 'react-router-dom';
+import React from 'react';
 
 //Components
 import Topbar from "../NAVBars/TopBar";
 import Sidebar from "../NAVBars/SideBar";
+import NewOrders from './NewOrders';
 
 //Light/Dark Mode
 import { ColorModeContext, useMode } from '../../theme';
@@ -14,21 +12,6 @@ import { CssBaseline, ThemeProvider } from '@mui/material';
 const Dashboard = () => {
 
   const [theme, colorMode] = useMode();
-  const [isSidebar, setIsSidebar] = useState(true);
-
-  const [error, setError] = useState("");
-  const { currentUser, logout } = useAuth();
-  const navigate = useNavigate();
-
-  async function handleLogout() {
-      setError("");
-      try {
-        await logout();
-        navigate("/login");
-      } catch(e) {
-        setError("Failed to logout: " + e);
-      }
-  }
 
   return (
     <>
@@ -53,7 +36,7 @@ const Dashboard = () => {
               <main className="content">
                 <Topbar />
                   <div className='w-100 text-center mt-2'>
-                    <Button variant="link" onClick={handleLogout}>Log Out</Button>
+                    <NewOrders />
                   </div>
               </main>
             </div>

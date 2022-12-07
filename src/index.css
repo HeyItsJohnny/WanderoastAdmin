@@ -33,3 +33,21 @@ body,
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+/*In Data Grids wrap the text*/
+.MuiDataGrid-viewport,
+.MuiDataGrid-row,
+.MuiDataGrid-renderingZone {
+    max-height: fit-content !important;
+}
+
+.MuiDataGrid-cell {
+    max-height: fit-content !important;
+    overflow: auto;
+    white-space: initial !important;
+    line-height: 16px !important;
+    display: flex !important;
+    align-items: center;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+}
