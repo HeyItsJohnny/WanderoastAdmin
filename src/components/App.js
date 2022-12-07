@@ -3,8 +3,16 @@ import SignUp from "./SignUp/SignUp";
 import Dashboard from "./Dashboard/Dashboard";
 import Login from "./Login/Login";
 import ForgotPassword from "./ForgotPassword/ForgotPassword";
-import UpdateProfile from "./UpdateProfile/UpdateProfile";
-import { Container } from 'react-bootstrap';
+
+//Side bar items
+import AdminUsers from "./SideBarItems/AdminUsers/AdminUsers";
+import Coupons from "./SideBarItems/Coupons/Coupons";
+import Customers from "./SideBarItems/Customers/Customers";
+import Items from "./SideBarItems/Items/Items";
+import NewTextOrder from "./SideBarItems/NewTextOrder/NewTextOrder";
+import Orders from "./SideBarItems/Orders/Orders";
+import Subscriptions from "./SideBarItems/Subscriptions/Subscriptions";
+
 import { AuthProvider } from "./Contexts/AuthContext";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import PrivateRoute from "./PrivateRoute";
@@ -16,28 +24,42 @@ function App() {
     return (
       <>
         <Router>
-          <AuthProvider> 
-            <Container className="d-flex align-items-center justify-content-center"
-            style={{ minHeight: "100vh" }}
-            >
-              <div className="w-100" style={{ maxWidth: '400px' }}>
-              <Routes>
-                <Route exact path="/" element={
-                  <PrivateRoute>
-                    <Dashboard />
-                  </PrivateRoute>
-                } />
-                <Route exact path="/updateprofile" element={
-                  <PrivateRoute>
-                    <UpdateProfile />
-                  </PrivateRoute>
-                } />
-                <Route path="/signup" element={<SignUp />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/forgotPassword" element={<ForgotPassword />} />
-              </Routes>
-              </div>
-            </Container>
+          <AuthProvider>
+            <Routes>
+              <Route exact path="/" element={
+                <PrivateRoute>
+                  <Dashboard />
+                </PrivateRoute>
+              } />
+              <Route exact path="/adminusers" element={
+                <PrivateRoute>
+                  <AdminUsers />
+                </PrivateRoute>
+              } />
+              <Route exact path="/coupons" element={
+                <PrivateRoute>
+                  <Coupons />
+                </PrivateRoute>
+              } />
+              <Route exact path="/customers" element={
+                <PrivateRoute>
+                  <Customers />
+                </PrivateRoute>
+              } />
+              <Route exact path="/items" element={
+                <PrivateRoute>
+                  <Items />
+                </PrivateRoute>
+              } />
+              <Route exact path="/newtextorder" element={
+                <PrivateRoute>
+                  <NewTextOrder />
+                </PrivateRoute>
+              } />
+              <Route path="/signup" element={<SignUp />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/forgotPassword" element={<ForgotPassword />} />
+            </Routes>
           </AuthProvider>
         </Router>
       </>

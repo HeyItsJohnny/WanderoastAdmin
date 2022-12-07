@@ -5,6 +5,7 @@ import { Link,useNavigate } from 'react-router-dom';
 
 //Components
 import Topbar from "../NAVBars/TopBar";
+import Sidebar from "../NAVBars/SideBar";
 
 //Light/Dark Mode
 import { ColorModeContext, useMode } from '../../theme';
@@ -13,6 +14,7 @@ import { CssBaseline, ThemeProvider } from '@mui/material';
 const Dashboard = () => {
 
   const [theme, colorMode] = useMode();
+  const [isSidebar, setIsSidebar] = useState(true);
 
   const [error, setError] = useState("");
   const { currentUser, logout } = useAuth();
@@ -45,14 +47,16 @@ const Dashboard = () => {
     */}
       <ColorModeContext.Provider value={colorMode}>
         <ThemeProvider theme={theme}>
-          <div className="app">
-            <main className="content">
-              <Topbar />
-              
-                <Button variant="link" onClick={handleLogout}>Log Out</Button>
-              
-            </main>
-          </div>
+          <CssBaseline />
+            <div className="app">
+              <Sidebar />
+              <main className="content">
+                <Topbar />
+                  <div className='w-100 text-center mt-2'>
+                    <Button variant="link" onClick={handleLogout}>Log Out</Button>
+                  </div>
+              </main>
+            </div>
         </ThemeProvider>
       </ColorModeContext.Provider>
       
