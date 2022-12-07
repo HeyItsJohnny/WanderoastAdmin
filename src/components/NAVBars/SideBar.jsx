@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState } from "react";
-import { Sidebar, Menu, MenuItem, ProSidebarProvider } from "react-pro-sidebar";
+import { Sidebar, Menu, MenuItem, useProSidebar } from "react-pro-sidebar";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
 //import "react-pro-sidebar/dist/css/styles.css";
@@ -38,8 +38,92 @@ const SideBar = () => {
   const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
+  const { collapseSidebar } = useProSidebar();
 
   return (
+    <div style={{ display: 'flex', height: '100%' }}>
+      <Box
+      sx={{
+        "& .pro-sidebar-inner": {
+          background: `${colors.primary[400]} !important`,
+        },
+        "& .pro-icon-wrapper": {
+          backgroundColor: "transparent !important",
+        },
+        "& .pro-inner-item": {
+          padding: "5px 35px 5px 20px !important",
+        },
+        "& .pro-inner-item:hover": {
+          color: "#868dfb !important",
+        },
+        "& .pro-menu-item.active": {
+          color: "#6870fa !important",
+        },
+      }}
+      >
+        <Sidebar backgroundColor={colors.primary[400]}>
+          <Menu iconShape="square">
+            <MenuItem
+              onClick={() => {
+                setIsCollapsed(!isCollapsed);
+                collapseSidebar();
+              }}
+              icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
+              style={{
+                margin: "10px 0 20px 0",
+                color: colors.grey[100],
+              }}
+            >
+              {!isCollapsed && (
+                <Box
+                  display="flex"
+                  justifyContent="space-between"
+                  alignItems="center"
+                  ml="15px"
+                >
+                  <Typography variant="h3" color={colors.grey[100]}>
+                    ADMINIS
+                  </Typography>
+                  <IconButton onClick={() => {
+                    setIsCollapsed(!isCollapsed);
+                    collapseSidebar();
+                  }}>
+                    <MenuOutlinedIcon />
+                  </IconButton>
+                </Box>
+              )}
+            </MenuItem>
+            {!isCollapsed && (
+              <Box mb="25px">
+                <Box display="flex" justifyContent="center" alignItems="center">
+
+                </Box>
+                <Box textAlign="center">
+                  <Typography
+                    variant="h2"
+                    color={colors.grey[100]}
+                    fontWeight="bold"
+                    sx={{ m: "10px 0 0 0" }}
+                  >
+                    Ed Roh
+                  </Typography>
+                  <Typography variant="h5" color={colors.greenAccent[500]}>
+                    VP Fancy Admin
+                  </Typography>
+                </Box>
+              </Box>
+            )}
+            {/*
+            <MenuItem> Documentation</MenuItem>
+            <MenuItem> Calendar</MenuItem>
+            <MenuItem> E-commerce</MenuItem>
+            */}
+          </Menu>
+        </Sidebar>
+      </Box>
+    </div>
+  )
+    {/*
     <Box
       sx={{
         "& .pro-sidebar-inner": {
@@ -59,12 +143,11 @@ const SideBar = () => {
         },
       }}
     >
-      <ProSidebarProvider>
-        <Sidebar collapsed={isCollapsed}>
+        <Sidebar>
           <Menu iconShape="square">
-            {/* LOGO AND MENU ICON */}
+            
             <MenuItem
-              onClick={() => setIsCollapsed(!isCollapsed)}
+              onClick={() => collapseSidebar()}
               icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
               style={{
                 margin: "10px 0 20px 0",
@@ -81,7 +164,7 @@ const SideBar = () => {
                   <Typography variant="h3" color={colors.grey[100]}>
                     ADMINIS
                   </Typography>
-                  <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
+                  <IconButton onClick={() => collapseSidebar()}>
                     <MenuOutlinedIcon />
                   </IconButton>
                 </Box>
@@ -91,15 +174,7 @@ const SideBar = () => {
             {!isCollapsed && (
               <Box mb="25px">
                 <Box display="flex" justifyContent="center" alignItems="center">
-                  {/*
-                  <img
-                    alt="profile-user"
-                    width="100px"
-                    height="100px"
-                    src={`../../assets/user.png`}
-                    style={{ cursor: "pointer", borderRadius: "50%" }}
-                  />
-            */}
+
                 </Box>
                 <Box textAlign="center">
                   <Typography
@@ -201,9 +276,9 @@ const SideBar = () => {
             </Box>
           </Menu>
         </Sidebar>
-      </ProSidebarProvider>
     </Box>
-  )
+         */}
+  
 }
 
 export default SideBar
