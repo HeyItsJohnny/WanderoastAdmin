@@ -1,11 +1,17 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 //Other Shit
-import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
+import MotionPhotosAutoIcon from '@mui/icons-material/MotionPhotosAuto';
+import ClearIcon from '@mui/icons-material/Clear';
+import CalculateIcon from '@mui/icons-material/Calculate';
 import { tokens } from "../../theme";
 import EmailIcon from "@mui/icons-material/Email";
 import CalculatorBox from './CalculatorBox';
 import CalculatorTotalBox from './CalculatorTotalBox';
+
+//Firebase
+import { db } from '../../Firebase/firebase';
+import { collection, getDocs, where, query } from 'firebase/firestore';
 
 //Components
 import Topbar from "../NAVBars/TopBar";
@@ -21,6 +27,123 @@ const Dashboard = () => {
 
   const [theme, colorMode] = useMode();
   const colors = tokens(theme.palette.mode);
+
+  const [smallBrazilBagData, setSmallBrazilBagData] = useState(0);
+  const [largeBrazilBagData, setLargeBrazilBagData] = useState(0);
+
+  const [smallCostaRicaBagData, setSmallCostaRicaBagData] = useState(0);
+  const [largeCostaRicaBagData, setLargeCostaRicaBagData] = useState(0);
+
+  const [smallColumbiaBagData, setSmallColumbiaBagData] = useState(0);
+  const [largeColumbiaBagData, setLargeColumbiaBagData] = useState(0);
+
+  const [smallEthopiaBagData, setSmallEthopiaBagData] = useState(0);
+  const [largeEthopiaBagData, setLargeEthopiaBagData] = useState(0);
+
+  const [smallSouthCentralBagData, setSmallSouthCentralBagData] = useState(0);
+  const [largeSouthCentralBagData, setLargeSouthCentralBagData] = useState(0);
+
+  const [smallJavaBagData, setSmallJavaBagData] = useState(0);
+  const [largeJavaBagData, setLargeJavaBagData] = useState(0);
+
+  const [smallDecafBagData, setSmallDecafBagData] = useState(0);
+  const [largeDecafBagData, setLargeDecafBagData] = useState(0);
+
+  function clearCalculations() { 
+    setSmallBrazilBagData(0);
+    setLargeBrazilBagData(0);
+    setSmallCostaRicaBagData(0);
+    setLargeCostaRicaBagData(0);
+    setSmallColumbiaBagData(0);
+    setLargeColumbiaBagData(0);
+    setSmallEthopiaBagData(0);
+    setLargeEthopiaBagData(0);
+    setSmallSouthCentralBagData(0);
+    setLargeSouthCentralBagData(0);
+    setSmallJavaBagData(0);
+    setLargeJavaBagData(0);
+    setSmallDecafBagData(0);
+    setLargeDecafBagData(0);
+  }
+
+  async function populateCalculations() {
+    const ordersCollection = query(collection(db,'orders'),where("Status","==","Order Created"))
+    const ordersSnapshot = await getDocs(ordersCollection);
+    const ordersList = ordersSnapshot.docs.map((doc) => ({
+      id: doc.id,
+      data: doc.data()
+    }));
+    for (var key in ordersList) {
+      populateCalculationsFinish(ordersList[key].id);
+    }
+  }
+
+  async function populateCalculationsFinish(orderID) {
+    const orderLinesCollection = collection(db, "orders", orderID, "orderlines");
+    const orderLinesSnapshot = await getDocs(orderLinesCollection);
+
+    const orderLinesList = orderLinesSnapshot.docs.map((doc) => ({
+        id: doc.id,
+        BagSize: doc.data().BagSize,
+        Quantity: doc.data().Quantity,
+        ItemId: doc.data().ItemId
+    }));
+
+    for (var key in orderLinesList) {
+      switch (orderLinesList[key].ItemId) {
+        case (0): {
+          if (orderLinesList[key].BagSize === "340G") {
+
+          } else if (orderLinesList[key].BagSize === "1000G") {
+
+          }
+        }
+        case (1): {
+          if (orderLinesList[key].BagSize === "340G") {
+
+          } else if (orderLinesList[key].BagSize === "1000G") {
+
+          }
+        }
+        case (2): {
+          if (orderLinesList[key].BagSize === "340G") {
+
+          } else if (orderLinesList[key].BagSize === "1000G") {
+
+          }
+        }
+        case (3): {
+          if (orderLinesList[key].BagSize === "340G") {
+
+          } else if (orderLinesList[key].BagSize === "1000G") {
+
+          }
+        }
+        case (4): {
+          if (orderLinesList[key].BagSize === "340G") {
+
+          } else if (orderLinesList[key].BagSize === "1000G") {
+
+          }
+        }
+        case (5): {
+          if (orderLinesList[key].BagSize === "340G") {
+
+          } else if (orderLinesList[key].BagSize === "1000G") {
+
+          }
+        }
+        case (7): {
+          if (orderLinesList[key].BagSize === "340G") {
+
+          } else if (orderLinesList[key].BagSize === "1000G") {
+
+          }
+        }
+      }
+    }
+
+  }
 
   return (
     <>
@@ -51,6 +174,38 @@ const Dashboard = () => {
                       <Box>
                         <Button
                           sx={{
+                            backgroundColor: colors.greenAccent[700],
+                            color: colors.grey[100],
+                            fontSize: "14px",
+                            fontWeight: "bold",
+                            padding: "10px 20px",
+                          }}
+                          onClick={() => {
+                              populateCalculations();
+                            }
+                          }
+                        >
+                          <MotionPhotosAutoIcon sx={{ mr: "10px" }} />
+                          Populate
+                        </Button>
+                        <Button
+                          sx={{
+                            backgroundColor: colors.grey[700],
+                            color: colors.grey[100],
+                            fontSize: "14px",
+                            fontWeight: "bold",
+                            padding: "10px 20px",
+                          }}
+                          onClick={() => {
+                              clearCalculations();
+                            }
+                          }
+                        >
+                          <ClearIcon sx={{ mr: "10px" }} />
+                          Clear All
+                        </Button>
+                        <Button
+                          sx={{
                             backgroundColor: colors.blueAccent[700],
                             color: colors.grey[100],
                             fontSize: "14px",
@@ -58,8 +213,8 @@ const Dashboard = () => {
                             padding: "10px 20px",
                           }}
                         >
-                          <DownloadOutlinedIcon sx={{ mr: "10px" }} />
-                          Calculate Roast
+                          <CalculateIcon sx={{ mr: "10px" }} />
+                          Calc. Roast
                         </Button>
                       </Box>
                     </Box>
@@ -81,9 +236,8 @@ const Dashboard = () => {
                       >
                         <CalculatorBox
                           title="Brazil"
-                          small="100"
-                          large="100"
-                          increase="+14%"
+                          small={smallBrazilBagData}
+                          large={largeBrazilBagData}
                           icon={
                             <EmailIcon
                               sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -101,9 +255,8 @@ const Dashboard = () => {
                       >
                         <CalculatorBox
                           title="Costa Rica"
-                          small="0"
-                          large="0"
-                          increase="+14%"
+                          small={smallCostaRicaBagData}
+                          large={largeCostaRicaBagData}
                           icon={
                             <EmailIcon
                               sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -121,9 +274,8 @@ const Dashboard = () => {
                       >
                         <CalculatorBox
                           title="Columbia"
-                          small="0"
-                          large="0"
-                          increase="+14%"
+                          small={smallColumbiaBagData}
+                          large={largeColumbiaBagData}
                           icon={
                             <EmailIcon
                               sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -141,9 +293,8 @@ const Dashboard = () => {
                       >
                         <CalculatorBox
                           title="Ethopia"
-                          small="0"
-                          large="0"
-                          increase="+14%"
+                          small={smallEthopiaBagData}
+                          large={largeEthopiaBagData}
                           icon={
                             <EmailIcon
                               sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -169,9 +320,8 @@ const Dashboard = () => {
                       >
                         <CalculatorBox
                           title="South Central"
-                          small="100"
-                          large="100"
-                          increase="+14%"
+                          small={smallSouthCentralBagData}
+                          large={largeSouthCentralBagData}
                           icon={
                             <EmailIcon
                               sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -189,9 +339,8 @@ const Dashboard = () => {
                       >
                         <CalculatorBox
                           title="Java"
-                          small="100"
-                          large="100"
-                          increase="+14%"
+                          small={smallJavaBagData}
+                          large={largeJavaBagData}
                           icon={
                             <EmailIcon
                               sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -209,9 +358,8 @@ const Dashboard = () => {
                       >
                         <CalculatorBox
                           title="Decaf"
-                          small="100"
-                          large="100"
-                          increase="+14%"
+                          small={smallDecafBagData}
+                          large={largeDecafBagData}
                           icon={
                             <EmailIcon
                               sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -228,7 +376,7 @@ const Dashboard = () => {
                         justifyContent="center"
                       >
                         <CalculatorTotalBox
-                          title="Totals"
+                          title="Totals (g)"
                           brazil="0"
                           costarica="0"
                           columbia="0"
