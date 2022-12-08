@@ -1,11 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import { Box, Typography, useTheme } from "@mui/material";
-import { DataGrid, GridValueGetterParams, GridColDef } from "@mui/x-data-grid";
+import { Box, useTheme } from "@mui/material";
+import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
-import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
-import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
-import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
-import Header from "../Header/Header";
 import { db } from '../../Firebase/firebase';
 import { collection, getDocs, where, query } from 'firebase/firestore';
 
@@ -25,18 +21,11 @@ const NewOrders = () => {
           CustomerNotes: doc.data().CustomerNotes,
           InternalComments: doc.data().InternalComments,
           OrderType: doc.data().OrderType
-          //OrderDate: doc.data().OrderDate.toDate()
         }));
     
         setOrders(ordersList);
         console.log(ordersList);
       }
-
-    function getDateString(TimeStamp) {
-        var dateFormat = new Date(TimeStamp);
-        console.log("MONTH: " + dateFormat.getMonth());
-        return dateFormat.getMonth() + "/" + dateFormat.getDate() + "/" + dateFormat.getFullYear();
-    }
 
     const columns = [
         {
@@ -71,10 +60,9 @@ const NewOrders = () => {
 
     return (
         <Box m="20px">
-        <Header title="New Orders" subtitle="New orders coming from text and website" />
         <Box
             m="40px 0 0 0"
-            height="75vh"
+            height="50vh"
             sx={{
             "& .MuiDataGrid-root": {
                 border: "none",
@@ -101,7 +89,12 @@ const NewOrders = () => {
             },
             }}
         >
-        <DataGrid checkboxSelection rows={orders} columns={columns} />
+        <DataGrid 
+            checkboxSelection 
+            rows={orders} 
+            columns={columns} 
+            pageSize={5}
+        />
       </Box>
     </Box>
     )
