@@ -61,7 +61,7 @@ const NewOrders = () => {
     return (
         <Box m="20px">
         <Box
-            m="40px 0 0 0"
+            m="20px 0 0 0"
             height="50vh"
             sx={{
             "& .MuiDataGrid-root": {
@@ -93,7 +93,7 @@ const NewOrders = () => {
             checkboxSelection 
             rows={orders} 
             columns={columns} 
-            pageSize={5}
+            pageSize={3}
         />
       </Box>
     </Box>

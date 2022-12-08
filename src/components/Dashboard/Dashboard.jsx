@@ -64,13 +64,13 @@ const Dashboard = () => {
                       </Box>
                     </Box>
                      {/* GRID & CHARTS */}
+                     {/* ROW 1*/}
                     <Box
                       display="grid"
                       gridTemplateColumns="repeat(12, 1fr)"
                       gridAutoRows="140px"
                       gap="20px"
                     >
-                      {/* ROW 1*/}
                       <Box
                         gridColumn="span 3"
                         backgroundColor={colors.primary[400]}
@@ -148,15 +148,17 @@ const Dashboard = () => {
                         />
                       </Box>
                     </Box>
+                    {/* ROW 2 */}
+                    
                     <Box
                       display="grid"
                       gridTemplateColumns="repeat(12, 1fr)"
                       gridAutoRows="140px"
                       gap="20px"
                     >
-                      {/* ROW 2*/}
                       <Box
                         gridColumn="span 3"
+                        mt="25px"
                         backgroundColor={colors.primary[400]}
                         display="flex"
                         alignItems="center"
@@ -164,8 +166,8 @@ const Dashboard = () => {
                       >
                         <CalculatorBox
                           title="South Central"
-                          small="0"
-                          large="0"
+                          small="100"
+                          large="100"
                           increase="+14%"
                           icon={
                             <EmailIcon
@@ -176,6 +178,7 @@ const Dashboard = () => {
                       </Box>
                       <Box
                         gridColumn="span 3"
+                        mt="25px"
                         backgroundColor={colors.primary[400]}
                         display="flex"
                         alignItems="center"
@@ -183,8 +186,8 @@ const Dashboard = () => {
                       >
                         <CalculatorBox
                           title="Java"
-                          small="0"
-                          large="0"
+                          small="100"
+                          large="100"
                           increase="+14%"
                           icon={
                             <EmailIcon
@@ -195,6 +198,7 @@ const Dashboard = () => {
                       </Box>
                       <Box
                         gridColumn="span 3"
+                        mt="25px"
                         backgroundColor={colors.primary[400]}
                         display="flex"
                         alignItems="center"
@@ -202,8 +206,8 @@ const Dashboard = () => {
                       >
                         <CalculatorBox
                           title="Decaf"
-                          small="0"
-                          large="0"
+                          small="100"
+                          large="100"
                           increase="+14%"
                           icon={
                             <EmailIcon
@@ -214,6 +218,7 @@ const Dashboard = () => {
                       </Box>
                       <Box
                         gridColumn="span 3"
+                        mt="25px"
                         backgroundColor={colors.primary[400]}
                         display="flex"
                         alignItems="center"
