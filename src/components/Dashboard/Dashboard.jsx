@@ -67,15 +67,22 @@ const Dashboard = () => {
   }
 
   async function populateCalculations() {
-    const ordersCollection = query(collection(db,'orders'),where("Status","==","Order Created"))
-    const ordersSnapshot = await getDocs(ordersCollection);
-    const ordersList = ordersSnapshot.docs.map((doc) => ({
-      id: doc.id,
-      data: doc.data()
-    }));
-    for (var key in ordersList) {
-      populateCalculationsFinish(ordersList[key].id);
+    clearCalculations();
+    try {
+      const ordersCollection = query(collection(db,'orders'),where("Status","==","Order Created"))
+      const ordersSnapshot = await getDocs(ordersCollection);
+      const ordersList = ordersSnapshot.docs.map((doc) => ({
+        id: doc.id,
+        data: doc.data()
+      }));
+      for (var key in ordersList) {
+        console.log("KEY: " + ordersList[key].id);
+        populateCalculationsFinish(ordersList[key].id);
+      }
+    } catch(e) {
+      alert("Error: " + e);
     }
+    
   }
 
   async function populateCalculationsFinish(orderID) {
@@ -89,60 +96,57 @@ const Dashboard = () => {
         ItemId: doc.data().ItemId
     }));
 
+    console.log(orderLinesList);
+
     for (var key in orderLinesList) {
-      switch (orderLinesList[key].ItemId) {
-        case (0): {
-          if (orderLinesList[key].BagSize === "340G") {
+      console.log("ITEM ID: " + orderLinesList[key].ItemId);
+      var ItemID = orderLinesList[key].ItemId * 1;
 
-          } else if (orderLinesList[key].BagSize === "1000G") {
-
-          }
+      if (orderLinesList[key].ItemId === "0") {
+        if (orderLinesList[key].BagSize === "340G") {
+          setSmallDecafBagData(smallDecafBagData + orderLinesList[key].Quantity);
+        } else if (orderLinesList[key].BagSize === "1000G") {
+          setLargeDecafBagData(largeDecafBagData + orderLinesList[key].Quantity);
         }
-        case (1): {
-          if (orderLinesList[key].BagSize === "340G") {
-
-          } else if (orderLinesList[key].BagSize === "1000G") {
-
-          }
+      } else if (orderLinesList[key].ItemId === "1") {
+        if (orderLinesList[key].BagSize === "340G") {
+          setSmallBrazilBagData(smallBrazilBagData + orderLinesList[key].Quantity);
+        } else if (orderLinesList[key].BagSize === "1000G") {
+          setLargeBrazilBagData(largeBrazilBagData + orderLinesList[key].Quantity);
         }
-        case (2): {
-          if (orderLinesList[key].BagSize === "340G") {
-
-          } else if (orderLinesList[key].BagSize === "1000G") {
-
-          }
+      } else if (orderLinesList[key].ItemId === "2") {
+        if (orderLinesList[key].BagSize === "340G") {
+          setSmallSouthCentralBagData(smallSouthCentralBagData + orderLinesList[key].Quantity);
+        } else if (orderLinesList[key].BagSize === "1000G") {
+          setLargeSouthCentralBagData(largeSouthCentralBagData + orderLinesList[key].Quantity);
         }
-        case (3): {
-          if (orderLinesList[key].BagSize === "340G") {
-
-          } else if (orderLinesList[key].BagSize === "1000G") {
-
-          }
+      } else if (orderLinesList[key].ItemId === "3") {
+        if (orderLinesList[key].BagSize === "340G") {
+          setSmallCostaRicaBagData(smallCostaRicaBagData + orderLinesList[key].Quantity);
+        } else if (orderLinesList[key].BagSize === "1000G") {
+          setLargeCostaRicaBagData(largeCostaRicaBagData + orderLinesList[key].Quantity);
         }
-        case (4): {
-          if (orderLinesList[key].BagSize === "340G") {
-
-          } else if (orderLinesList[key].BagSize === "1000G") {
-
-          }
+      } else if (orderLinesList[key].ItemId === "4") {
+        if (orderLinesList[key].BagSize === "340G") {
+          setSmallColumbiaBagData(smallColumbiaBagData + orderLinesList[key].Quantity);
+        } else if (orderLinesList[key].BagSize === "1000G") {
+          setLargeColumbiaBagData(largeColumbiaBagData + orderLinesList[key].Quantity);
         }
-        case (5): {
-          if (orderLinesList[key].BagSize === "340G") {
-
-          } else if (orderLinesList[key].BagSize === "1000G") {
-
-          }
+      } else if (orderLinesList[key].itemId === "5") {
+        if (orderLinesList[key].BagSize === "340G") {
+          setSmallEthopiaBagData(smallEthopiaBagData + orderLinesList[key].Quantity);
+        } else if (orderLinesList[key].BagSize === "1000G") {
+          setLargeEthopiaBagData(largeEthopiaBagData + orderLinesList[key].Quantity);
         }
-        case (7): {
-          if (orderLinesList[key].BagSize === "340G") {
-
-          } else if (orderLinesList[key].BagSize === "1000G") {
-
-          }
+      } else if (ItemID === 7) {
+        console.log("HIT.");
+        if (orderLinesList[key].BagSize === "340G") {
+          setSmallJavaBagData(smallJavaBagData + orderLinesList[key].Quantity);
+        } else if (orderLinesList[key].BagSize === "1000G") {
+          setLargeJavaBagData(largeJavaBagData + orderLinesList[key].Quantity);
         }
       }
     }
-
   }
 
   return (
