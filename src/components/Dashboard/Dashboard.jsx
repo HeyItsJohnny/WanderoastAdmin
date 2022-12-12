@@ -49,6 +49,21 @@ const Dashboard = () => {
   const [smallDecafBagData, setSmallDecafBagData] = useState(0);
   const [largeDecafBagData, setLargeDecafBagData] = useState(0);
 
+  var EthopiaSmallBag = 0;
+  var EthopiaBigBag = 0;
+  var ColumbiaSmallBag = 0;
+  var ColumbiaBigBag = 0;
+  var CostaRicaSmallBag = 0;
+  var CostaRicaBigBag = 0;
+  var BrazilSmallBag = 0;
+  var BrazilBigBag = 0;
+  var SouthCentralSmallBag = 0;
+  var SouthCentralBigBag = 0;
+  var DecafSmallBag = 0;
+  var DecafBigBag = 0;
+  var JavaSmallBag = 0;
+  var JavaBigBag = 0;
+
   function clearCalculations() { 
     setSmallBrazilBagData(0);
     setLargeBrazilBagData(0);
@@ -64,11 +79,27 @@ const Dashboard = () => {
     setLargeJavaBagData(0);
     setSmallDecafBagData(0);
     setLargeDecafBagData(0);
+
+    EthopiaSmallBag = 0;
+    EthopiaBigBag = 0;
+    ColumbiaSmallBag = 0;
+    ColumbiaBigBag = 0;
+    CostaRicaSmallBag = 0;
+    CostaRicaBigBag = 0;
+    BrazilSmallBag = 0;
+    BrazilBigBag = 0;
+    SouthCentralSmallBag = 0;
+    SouthCentralBigBag = 0;
+    DecafSmallBag = 0;
+    DecafBigBag = 0;
+    JavaSmallBag = 0;
+    JavaBigBag = 0;
   }
 
   async function populateCalculations() {
     clearCalculations();
     try {
+
       const ordersCollection = query(collection(db,'orders'),where("Status","==","Order Created"))
       const ordersSnapshot = await getDocs(ordersCollection);
       const ordersList = ordersSnapshot.docs.map((doc) => ({
@@ -76,7 +107,6 @@ const Dashboard = () => {
         data: doc.data()
       }));
       for (var key in ordersList) {
-        console.log("KEY: " + ordersList[key].id);
         populateCalculationsFinish(ordersList[key].id);
       }
     } catch(e) {
@@ -96,74 +126,76 @@ const Dashboard = () => {
         ItemId: doc.data().ItemId
     }));
 
-    console.log(orderLinesList);
 
     for (var key in orderLinesList) {
-      console.log("ITEM ID: " + orderLinesList[key].ItemId);
       var ItemID = orderLinesList[key].ItemId * 1;
 
-      if (orderLinesList[key].ItemId === "0") {
+      if (ItemID === 0) {
         if (orderLinesList[key].BagSize === "340G") {
-          setSmallDecafBagData(smallDecafBagData + orderLinesList[key].Quantity);
+          DecafSmallBag +=  orderLinesList[key].Quantity;
         } else if (orderLinesList[key].BagSize === "1000G") {
-          setLargeDecafBagData(largeDecafBagData + orderLinesList[key].Quantity);
+          DecafBigBag +=  orderLinesList[key].Quantity;
         }
-      } else if (orderLinesList[key].ItemId === "1") {
+      } else if (ItemID === 1) {
         if (orderLinesList[key].BagSize === "340G") {
-          setSmallBrazilBagData(smallBrazilBagData + orderLinesList[key].Quantity);
+          BrazilSmallBag +=  orderLinesList[key].Quantity;
         } else if (orderLinesList[key].BagSize === "1000G") {
-          setLargeBrazilBagData(largeBrazilBagData + orderLinesList[key].Quantity);
+          BrazilBigBag +=  orderLinesList[key].Quantity;
         }
-      } else if (orderLinesList[key].ItemId === "2") {
+      } else if (ItemID === 2) {
         if (orderLinesList[key].BagSize === "340G") {
-          setSmallSouthCentralBagData(smallSouthCentralBagData + orderLinesList[key].Quantity);
+          SouthCentralSmallBag +=  orderLinesList[key].Quantity;
         } else if (orderLinesList[key].BagSize === "1000G") {
-          setLargeSouthCentralBagData(largeSouthCentralBagData + orderLinesList[key].Quantity);
+          SouthCentralBigBag +=  orderLinesList[key].Quantity;
         }
-      } else if (orderLinesList[key].ItemId === "3") {
+      } else if (ItemID === 3) {
         if (orderLinesList[key].BagSize === "340G") {
-          setSmallCostaRicaBagData(smallCostaRicaBagData + orderLinesList[key].Quantity);
+          CostaRicaSmallBag +=  orderLinesList[key].Quantity;
         } else if (orderLinesList[key].BagSize === "1000G") {
-          setLargeCostaRicaBagData(largeCostaRicaBagData + orderLinesList[key].Quantity);
+          CostaRicaBigBag +=  orderLinesList[key].Quantity;
         }
-      } else if (orderLinesList[key].ItemId === "4") {
+      } else if (ItemID === 4) {
         if (orderLinesList[key].BagSize === "340G") {
-          setSmallColumbiaBagData(smallColumbiaBagData + orderLinesList[key].Quantity);
+          ColumbiaSmallBag +=  orderLinesList[key].Quantity;
         } else if (orderLinesList[key].BagSize === "1000G") {
-          setLargeColumbiaBagData(largeColumbiaBagData + orderLinesList[key].Quantity);
+          ColumbiaBigBag +=  orderLinesList[key].Quantity;
         }
-      } else if (orderLinesList[key].itemId === "5") {
+      } else if (ItemID === 5) {
         if (orderLinesList[key].BagSize === "340G") {
-          setSmallEthopiaBagData(smallEthopiaBagData + orderLinesList[key].Quantity);
+          EthopiaSmallBag +=  orderLinesList[key].Quantity;
         } else if (orderLinesList[key].BagSize === "1000G") {
-          setLargeEthopiaBagData(largeEthopiaBagData + orderLinesList[key].Quantity);
+          EthopiaBigBag +=  orderLinesList[key].Quantity;
         }
       } else if (ItemID === 7) {
-        console.log("HIT.");
         if (orderLinesList[key].BagSize === "340G") {
-          setSmallJavaBagData(smallJavaBagData + orderLinesList[key].Quantity);
+          JavaSmallBag += orderLinesList[key].Quantity;
         } else if (orderLinesList[key].BagSize === "1000G") {
-          setLargeJavaBagData(largeJavaBagData + orderLinesList[key].Quantity);
+          JavaBigBag += orderLinesList[key].Quantity;
         }
       }
     }
+    setVariables();
+  }
+
+  function setVariables() {
+    setSmallColumbiaBagData(ColumbiaSmallBag);
+    setLargeColumbiaBagData(ColumbiaBigBag);
+    setSmallEthopiaBagData(EthopiaSmallBag);
+    setLargeEthopiaBagData(EthopiaBigBag);
+    setSmallCostaRicaBagData(CostaRicaSmallBag);
+    setLargeCostaRicaBagData(CostaRicaBigBag);
+    setSmallBrazilBagData(BrazilSmallBag);
+    setLargeBrazilBagData(BrazilBigBag);
+    setSmallSouthCentralBagData(SouthCentralSmallBag);
+    setLargeSouthCentralBagData(SouthCentralBigBag);
+    setSmallDecafBagData(DecafSmallBag);
+    setLargeDecafBagData(DecafBigBag);
+    setSmallJavaBagData(JavaSmallBag);
+    setLargeJavaBagData(JavaBigBag);
   }
 
   return (
     <>
-    {/*
-    
-      <Card>
-        <Card.Body>
-           <h2 className="text-center mb-4">Profile</h2>         
-           {error && <Alert variant="danger">{error}</Alert>}
-           <strong>Email: </strong> {currentUser.email}
-           <Link to="/updateProfile" className="btn btn-primary w-100 mt-3">
-              Update Profile
-           </Link>
-        </Card.Body>
-      </Card>
-    */}
       <ColorModeContext.Provider value={colorMode}>
         <ThemeProvider theme={theme}>
           <CssBaseline />

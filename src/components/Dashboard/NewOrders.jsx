@@ -130,7 +130,7 @@ const NewOrders = () => {
                     checkboxSelection 
                     rows={orders} 
                     columns={columns} 
-                    pageSize={3}
+                    pageSize={25}
                 />
             </Box>
         </Box>
