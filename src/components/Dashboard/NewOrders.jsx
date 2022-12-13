@@ -32,9 +32,9 @@ const NewOrders = () => {
         }));
     
         setOrders(ordersList);
-        console.log(ordersList);
       }
     
+    /*
     const fetchOrderLineData = async (orderID) => {
         const orderLinesCollection = collection(db,'orders',orderID,"orderlines")
         const orderLinesSnapshot = await getDocs(orderLinesCollection);
@@ -43,6 +43,7 @@ const NewOrders = () => {
         }));
         return orderLinesList;
     }
+    */
 
     const columns = [
         {

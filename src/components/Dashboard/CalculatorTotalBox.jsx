@@ -22,6 +22,23 @@ const CalculatorTotalBox = ({ title, brazil, costarica, columbia, ethopia, south
                 <Typography variant="h6" sx={{ color: colors.greenAccent[500] }}>
                     Brazil: {brazil}
                 </Typography>
+                <Typography variant="h6" sx={{ color: colors.greenAccent[500] }}>
+                    Costa Rica: {costarica}
+                </Typography>
+                <Typography variant="h6" sx={{ color: colors.greenAccent[500] }}>
+                    Columbia: {columbia}
+                </Typography>
+            </Box>
+            <Box display="flex" justifyContent="space-between" mt="2px">
+                <Typography variant="h6" sx={{ color: colors.greenAccent[500] }}>
+                    Ethopia: {ethopia}
+                </Typography>
+                <Typography variant="h6" sx={{ color: colors.greenAccent[500] }}>
+                    South Central: {southcentral}
+                </Typography>
+                <Typography variant="h6" sx={{ color: colors.greenAccent[500] }}>
+                    Java: {java}
+                </Typography>
             </Box>
       </Box>
     )

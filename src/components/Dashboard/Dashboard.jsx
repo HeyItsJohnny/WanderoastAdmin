@@ -49,6 +49,14 @@ const Dashboard = () => {
   const [smallDecafBagData, setSmallDecafBagData] = useState(0);
   const [largeDecafBagData, setLargeDecafBagData] = useState(0);
 
+  const [brazilTotalData, setBrazilTotalData] = useState(0);
+  const [costaRicaTotalData, setCostaRicaTotalData] = useState(0);
+  const [columbiaTotalData, setColumbiaTotalData] = useState(0);
+  const [ethopiaTotalData, setEthopiaTotalData] = useState(0);
+  const [southCentralTotalData, setSouthCentralTotalData] = useState(0);
+  const [javaTotalData, setJavaTotalData] = useState(0);
+  const [decafTotalData, setDecafTotalData] = useState(0);
+
   var EthopiaSmallBag = 0;
   var EthopiaBigBag = 0;
   var ColumbiaSmallBag = 0;
@@ -64,7 +72,7 @@ const Dashboard = () => {
   var JavaSmallBag = 0;
   var JavaBigBag = 0;
 
-  function clearCalculations() { 
+  function clearCalculationsForPopulate() { 
     setSmallBrazilBagData(0);
     setLargeBrazilBagData(0);
     setSmallCostaRicaBagData(0);
@@ -97,7 +105,7 @@ const Dashboard = () => {
   }
 
   async function populateCalculations() {
-    clearCalculations();
+    clearCalculationsForPopulate();
     try {
 
       const ordersCollection = query(collection(db,'orders'),where("Status","==","Order Created"))
@@ -194,6 +202,33 @@ const Dashboard = () => {
     setLargeJavaBagData(JavaBigBag);
   }
 
+  function clearAllCalculations() {
+    clearCalculationsForPopulate();
+    clearTotals();
+  }
+
+  function clearTotals() {
+    setBrazilTotalData(0);
+    setCostaRicaTotalData(0);
+    setColumbiaTotalData(0);
+    setEthopiaTotalData(0);
+    setSouthCentralTotalData(0);
+    setJavaTotalData(0);
+    setDecafTotalData(0);
+  }
+
+  function calculateRoast() {
+    clearTotals();
+
+    setBrazilTotalData(((smallBrazilBagData*340) + (largeBrazilBagData * 1000)) * 1);
+    setCostaRicaTotalData(((smallCostaRicaBagData*340) + (largeCostaRicaBagData * 1000)) * 1);
+    setColumbiaTotalData(((smallColumbiaBagData*340) + (largeColumbiaBagData * 1000)) * 1);
+    setEthopiaTotalData(((smallEthopiaBagData*340) + (largeEthopiaBagData * 1000)) * 1);
+    setSouthCentralTotalData(((smallSouthCentralBagData*340) + (largeSouthCentralBagData * 1000)) * 1);
+    setJavaTotalData(((smallJavaBagData*340) + (largeJavaBagData * 1000)) * 1);
+    setDecafTotalData(((smallDecafBagData*340) + (largeDecafBagData * 1000)) * 1);
+  }
+
   return (
     <>
       <ColorModeContext.Provider value={colorMode}>
@@ -226,6 +261,22 @@ const Dashboard = () => {
                         </Button>
                         <Button
                           sx={{
+                            backgroundColor: colors.blueAccent[700],
+                            color: colors.grey[100],
+                            fontSize: "14px",
+                            fontWeight: "bold",
+                            padding: "10px 20px",
+                          }}
+                          onClick={() => {
+                            calculateRoast();
+                          }
+                        }
+                        >
+                          <CalculateIcon sx={{ mr: "10px" }} />
+                          Calc. Roast
+                        </Button>
+                        <Button
+                          sx={{
                             backgroundColor: colors.grey[700],
                             color: colors.grey[100],
                             fontSize: "14px",
@@ -233,24 +284,12 @@ const Dashboard = () => {
                             padding: "10px 20px",
                           }}
                           onClick={() => {
-                              clearCalculations();
+                              clearAllCalculations();
                             }
                           }
                         >
                           <ClearIcon sx={{ mr: "10px" }} />
                           Clear All
-                        </Button>
-                        <Button
-                          sx={{
-                            backgroundColor: colors.blueAccent[700],
-                            color: colors.grey[100],
-                            fontSize: "14px",
-                            fontWeight: "bold",
-                            padding: "10px 20px",
-                          }}
-                        >
-                          <CalculateIcon sx={{ mr: "10px" }} />
-                          Calc. Roast
                         </Button>
                       </Box>
                     </Box>
@@ -413,13 +452,13 @@ const Dashboard = () => {
                       >
                         <CalculatorTotalBox
                           title="Totals (g)"
-                          brazil="0"
-                          costarica="0"
-                          columbia="0"
-                          ethopia="0"
-                          southcentral="0"
-                          java="0"
-                          decaf="0"
+                          brazil={brazilTotalData}
+                          costarica={costaRicaTotalData}
+                          columbia={columbiaTotalData}
+                          ethopia={ethopiaTotalData}
+                          southcentral={southCentralTotalData}
+                          java={javaTotalData}
+                          decaf={decafTotalData}
                           increase="+14%"
                           icon={
                             <EmailIcon
