@@ -39,6 +39,9 @@ const CalculatorTotalBox = ({ title, brazil, costarica, columbia, ethopia, south
                 <Typography variant="h6" sx={{ color: colors.greenAccent[500] }}>
                     Java: {java}
                 </Typography>
+                <Typography variant="h6" sx={{ color: colors.greenAccent[500] }}>
+                    Decaf: {decaf}
+                </Typography>
             </Box>
       </Box>
     )

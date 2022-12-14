@@ -8,6 +8,7 @@ import { tokens } from "../../theme";
 import EmailIcon from "@mui/icons-material/Email";
 import CalculatorBox from './CalculatorBox';
 import CalculatorTotalBox from './CalculatorTotalBox';
+import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
 
 //Firebase
 import { db } from '../../Firebase/firebase';
@@ -229,6 +230,10 @@ const Dashboard = () => {
     setDecafTotalData(((smallDecafBagData*340) + (largeDecafBagData * 1000)) * 1);
   }
 
+  function changeOrderStatus() {
+    alert("CHANGE Order Status.");
+  }
+
   return (
     <>
       <ColorModeContext.Provider value={colorMode}>
@@ -241,8 +246,27 @@ const Dashboard = () => {
                   <Box m="20px">
                     {/* HEADER */}
                     <Box display="flex" justifyContent="space-between" alignItems="center">
-                      <Header title="DASHBOARD" subtitle="Welcome to the fucking moon." />
+                      <Header title="DASHBOARD" subtitle="A snowflake is one of God's most fragile creations, but look what they can do when they stick together." />
                       <Box>
+                        <Button
+                          sx={{
+                            backgroundColor: colors.blueAccent[700],
+                            color: colors.grey[100],
+                            fontSize: "14px",
+                            fontWeight: "bold",
+                            padding: "10px 20px",
+                          }}
+                          onClick={() => {
+                            changeOrderStatus();
+                          }
+                        }
+                        >
+                          <ChangeCircleIcon sx={{ mr: "10px" }} />
+                          Change Status
+                        </Button>
+                      </Box>
+                    </Box>
+                    <Box>
                         <Button
                           sx={{
                             backgroundColor: colors.greenAccent[700],
@@ -292,7 +316,6 @@ const Dashboard = () => {
                           Clear All
                         </Button>
                       </Box>
-                    </Box>
                      {/* GRID & CHARTS */}
                      {/* ROW 1*/}
                     <Box
