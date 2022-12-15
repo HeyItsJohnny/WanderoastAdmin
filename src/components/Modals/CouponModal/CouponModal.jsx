@@ -15,6 +15,7 @@ import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
 
 import { db } from "../../../Firebase/firebase";
+import { doc, setDoc } from "firebase/firestore"; 
 
 const CouponModal = () => {
     const [theme ] = useMode();
@@ -32,17 +33,34 @@ const CouponModal = () => {
     };
 
     const handleReset = () => {
-
+        setCouponAmountType("");
         handleClose();
       };
     
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(e);
+
+        addCouponDoc(e)
         console.log("CODE: " + e.target.couponcode.value);
+        console.log("Coupon Type: " + couponAmountType);
         handleReset();
       };
 
+    async function addCouponDoc(data) {
+        const couponData = {
+            CanStackCoupon: true,
+            CouponAmountType: couponAmountType,
+            CouponCode: data.target.couponcode.value.toUpperCase(),
+            CouponDescription: data.target.description.value,
+            CouponDiscount: data.target.discountamount.value,
+            ItemID: "noItem",
+            ItemName: "",
+            MinimumAmount: data.target.minimumamount.value,
+            Type: "Invoice"
+        };
+
+        await setDoc(doc(db, "coupons", data.target.couponcode.value.toUpperCase()), couponData);
+    }  
 
     return (
         <>

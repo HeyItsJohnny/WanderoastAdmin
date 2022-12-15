@@ -3,7 +3,7 @@ import { Box, useTheme, } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../../theme";
 import { db } from '../../../Firebase/firebase';
-import { collection, getDocs, query } from 'firebase/firestore';
+import { collection, getDocs, query, onSnapshot, doc} from 'firebase/firestore';
 
 const CouponsList = () => {
 
@@ -13,17 +13,21 @@ const CouponsList = () => {
     const [coupons, setCoupons] = useState([]);
 
     const fetchCouponData = async ()=>{
-        const couponsCollection = query(collection(db,'coupons'))
-        const couponsSnapshot = await getDocs(couponsCollection);
-        const couponsList = couponsSnapshot.docs.map((doc) => ({
-          id: doc.id,
-          CouponCode: doc.data().CouponCode,
-          Description: doc.data().CouponDescription,
-          CouponType: doc.data().CouponAmountType,
-          CouponDiscount: doc.data().CouponDiscount,
-        }));
-    
-        setCoupons(couponsList);
+        const couponsCollection = query(collection(db,'coupons'));
+        onSnapshot(couponsCollection, (querySnapshot) => {
+            const couponsList = [];
+            querySnapshot.forEach((doc) => {
+                var couponData = {
+                    id: doc.id,
+                    CouponCode: doc.data().CouponCode,
+                    Description: doc.data().CouponDescription,
+                    CouponType: doc.data().CouponAmountType,
+                    CouponDiscount: doc.data().CouponDiscount,
+                }
+                couponsList.push(couponData);
+            });
+            setCoupons(couponsList);
+          });
       }
 
       const columns = [
