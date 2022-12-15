@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 //Light/Dark Mode
 import { ColorModeContext, useMode, tokens } from '../../../theme';
@@ -16,12 +16,31 @@ import Header from "../../Header/Header";
 //Modals
 import CouponModal from '../../Modals/CouponModal/CouponModal';
 
+//Firebase
+import { db } from '../../../Firebase/firebase';
+import { doc, deleteDoc} from 'firebase/firestore';
+
 const Coupons = () => {
   const [theme, colorMode] = useMode();
   const colors = tokens(theme.palette.mode);
 
-  function removeCoupon() {
+  //var [selectedCoupons, setSelectedCoupons] = useState([]);
+  var selectedCoupons = [];
 
+  const couponsToRemove = (data) => {
+    console.log("HIT.");
+    selectedCoupons = data.selectedRowsData;
+    console.log(selectedCoupons);
+}
+
+  function removeCoupon() {
+    for (var key in selectedCoupons) {
+      deleteCoupon(selectedCoupons[key].CouponCode)
+    }
+  }
+
+  async function deleteCoupon(couponcode) {
+    await deleteDoc(doc(db,"coupons",couponcode));
   }
 
   return (
@@ -58,7 +77,7 @@ const Coupons = () => {
                     </Box>
                 </Box>
                 <div className='w-100 text-center mt-2'>
-                  <NewOrders />
+                  <NewOrders couponsToRemove={couponsToRemove}/>
                 </div>
             </main>
           </div>

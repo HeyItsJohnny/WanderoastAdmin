@@ -5,7 +5,7 @@ import { tokens } from "../../../theme";
 import { db } from '../../../Firebase/firebase';
 import { collection, query, onSnapshot} from 'firebase/firestore';
 
-const CouponsList = () => {
+const CouponsList = ({couponsToRemove}) => {
 
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
@@ -57,6 +57,12 @@ const CouponsList = () => {
         fetchCouponData();
       }, []);
 
+
+    const onRowsSelectionHandler = (ids) => {
+        const selectedRowsData = ids.map((id) => coupons.find((row) => row.id === id));
+        couponsToRemove({selectedRowsData});
+    };
+
     return (
         <Box m="20px">
             <Box
@@ -93,6 +99,7 @@ const CouponsList = () => {
                     rows={coupons} 
                     columns={columns} 
                     pageSize={10}
+                    onSelectionModelChange={(ids) => onRowsSelectionHandler(ids)}
                 />
             </Box>
         </Box>
