@@ -5,7 +5,6 @@ import { ColorModeContext, useMode, tokens } from '../../../theme';
 import { Box, CssBaseline, ThemeProvider, Button } from '@mui/material';
 
 //Icons
-import AddCircleIcon from '@mui/icons-material/AddCircle';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 
 //Components
@@ -14,13 +13,12 @@ import Sidebar from "../../NAVBars/SideBar";
 import NewOrders from './CouponsList';
 import Header from "../../Header/Header";
 
+//Modals
+import CouponModal from '../../Modals/CouponModal/CouponModal';
+
 const Coupons = () => {
   const [theme, colorMode] = useMode();
   const colors = tokens(theme.palette.mode);
-
-  function addNewCoupon() {
-
-  }
 
   function removeCoupon() {
 
@@ -39,22 +37,7 @@ const Coupons = () => {
                     <Box display="flex" justifyContent="space-between" alignItems="center">
                       <Header title="COUPONS" subtitle='There is no "I" in team. But there is a "me" in that bitch.' />
                       <Box>
-                        <Button
-                          sx={{
-                            backgroundColor: colors.greenAccent[700],
-                            color: colors.grey[100],
-                            fontSize: "14px",
-                            fontWeight: "bold",
-                            padding: "10px 20px",
-                          }}
-                          onClick={() => {
-                              addNewCoupon();
-                            }
-                          }
-                        >
-                          <AddCircleIcon sx={{ mr: "10px" }} />
-                          Add New Coupon
-                        </Button>
+                        <CouponModal />
                         <Button
                           sx={{
                             backgroundColor: colors.grey[700],
