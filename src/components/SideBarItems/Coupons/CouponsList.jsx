@@ -3,7 +3,7 @@ import { Box, useTheme, } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../../theme";
 import { db } from '../../../Firebase/firebase';
-import { collection, getDocs, query, onSnapshot, doc} from 'firebase/firestore';
+import { collection, query, onSnapshot} from 'firebase/firestore';
 
 const CouponsList = () => {
 
