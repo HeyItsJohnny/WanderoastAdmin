@@ -10,7 +10,7 @@ import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 //Components
 import Topbar from "../../NAVBars/TopBar";
 import Sidebar from "../../NAVBars/SideBar";
-import NewOrders from './CouponsList';
+import CouponsList from './CouponsList';
 import Header from "../../Header/Header";
 
 //Modals
@@ -77,7 +77,7 @@ const Coupons = () => {
                     </Box>
                 </Box>
                 <div className='w-100 text-center mt-2'>
-                  <NewOrders couponsToRemove={couponsToRemove}/>
+                  <CouponsList couponsToRemove={couponsToRemove}/>
                 </div>
             </main>
           </div>
