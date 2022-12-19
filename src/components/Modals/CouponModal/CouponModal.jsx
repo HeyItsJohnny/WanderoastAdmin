@@ -28,7 +28,7 @@ const CouponModal = () => {
 
     const [couponAmountType, setCouponAmountType] = useState('');
 
-    const handleChange = (event ) => {
+    const handleChange = (event) => {
         setCouponAmountType(event.target.value);
     };
 
@@ -41,8 +41,6 @@ const CouponModal = () => {
         e.preventDefault();
 
         addCouponDoc(e)
-        console.log("CODE: " + e.target.couponcode.value);
-        console.log("Coupon Type: " + couponAmountType);
         handleReset();
       };
 

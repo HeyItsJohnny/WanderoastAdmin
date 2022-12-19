@@ -14,7 +14,7 @@ import ItemsList from './ItemsList';
 import Header from "../../Header/Header";
 
 //Modals
-//import CouponModal from '../../Modals/CouponModal/CouponModal';
+import ItemModal from '../../Modals/ItemModal/ItemModal';
 
 //Firebase
 import { db } from '../../../Firebase/firebase';
@@ -54,9 +54,7 @@ const Items = () => {
                   <Box display="flex" justifyContent="space-between" alignItems="center">
                     <Header title="ITEMS" subtitle='There is no "I" in team. But there is a "me" in that bitch.' />
                     <Box>
-                      {/*
-                      <CouponModal />
-                      */}
+                      <ItemModal />
                       <Button
                         sx={{
                           backgroundColor: colors.grey[700],
@@ -77,9 +75,7 @@ const Items = () => {
                   </Box>
               </Box>
               <div className='w-100 text-center mt-2'>
-                {/*
-                <NewOrders couponsToRemove={couponsToRemove}/>
-                */}
+                <ItemsList itemsToRemove={itemsToRemove}/>
               </div>
           </main>
         </div>

@@ -55,7 +55,7 @@ const CouponsList = ({couponsToRemove}) => {
 
     useEffect(() => {
         fetchCouponData();
-      }, []);
+    }, []);
 
 
     const onRowsSelectionHandler = (ids) => {
