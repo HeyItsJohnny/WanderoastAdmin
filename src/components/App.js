@@ -12,6 +12,7 @@ import Items from "./SideBarItems/Items/Items";
 import NewTextOrder from "./SideBarItems/NewTextOrder/NewTextOrder";
 import Orders from "./SideBarItems/Orders/Orders";
 import Subscriptions from "./SideBarItems/Subscriptions/Subscriptions";
+import ItemDetails from "./SideBarItems/Items/ItemDetails";
 
 import { AuthProvider } from "./Contexts/AuthContext";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -49,6 +50,11 @@ function App() {
               <Route exact path="/items" element={
                 <PrivateRoute>
                   <Items />
+                </PrivateRoute>
+              } />
+              <Route exact path="/itemdetails/:itemid" element={
+                <PrivateRoute>
+                  <ItemDetails />
                 </PrivateRoute>
               } />
               <Route exact path="/newtextorder" element={

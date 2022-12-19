@@ -17,12 +17,17 @@ const ItemsList = ({itemsToRemove}) => {
       onSnapshot(couponsCollection, (querySnapshot) => {
           const itemsList = [];
           querySnapshot.forEach((doc) => {
-              var itemData = {
-                  id: doc.id,
-                  Name: doc.data().Name,
-                  EnableItem: doc.data().EnableItem,
-              }
-              itemsList.push(itemData);
+            var hasImage = true;
+            if (doc.data().ImageFilePath === "") {
+                hasImage = false;
+            }
+            var itemData = {
+                id: doc.id,
+                Name: doc.data().Name,
+                EnableItem: doc.data().EnableItem,
+                HasImage: hasImage
+            }
+            itemsList.push(itemData);
           });
           setItems(itemsList);
         });
@@ -38,7 +43,12 @@ const ItemsList = ({itemsToRemove}) => {
           field: "EnableItem", 
           headerName: "Enabled", 
           flex: 1
-      }
+      },
+      {
+        field: "HasImage", 
+        headerName: "Image Uploaded", 
+        flex: 1
+    }
   ]
 
   useEffect(() => {
@@ -49,6 +59,10 @@ const ItemsList = ({itemsToRemove}) => {
   const onRowsSelectionHandler = (ids) => {
       const selectedRowsData = ids.map((id) => items.find((row) => row.id === id));
       itemsToRemove({selectedRowsData});
+  };
+
+  const handleRowClick = (params) => {
+    alert(`ROW "${params.row.Name}" clicked`);
   };
 
   return (
@@ -88,6 +102,7 @@ const ItemsList = ({itemsToRemove}) => {
             columns={columns} 
             pageSize={20}
             onSelectionModelChange={(ids) => onRowsSelectionHandler(ids)}
+            onRowClick={handleRowClick} {...items}
         />
     </Box>
   </Box>

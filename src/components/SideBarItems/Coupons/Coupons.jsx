@@ -14,7 +14,7 @@ import CouponsList from './CouponsList';
 import Header from "../../Header/Header";
 
 //Modals
-import CouponModal from '../../Modals/CouponModal/CouponModal';
+import CouponModal from '../../Modals/CouponModal';
 
 //Firebase
 import { db } from '../../../Firebase/firebase';

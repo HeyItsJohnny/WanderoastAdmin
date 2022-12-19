@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { useMode, tokens } from '../../../theme';
+import { useMode, tokens } from '../../theme';
 import { Button, Checkbox } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -17,7 +17,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
 
-import { db } from "../../../Firebase/firebase";
+import { db } from "../../Firebase/firebase";
 import { addDoc, collection } from "firebase/firestore";
 
 const ItemModal = () => {

@@ -14,7 +14,7 @@ import ItemsList from './ItemsList';
 import Header from "../../Header/Header";
 
 //Modals
-import ItemModal from '../../Modals/ItemModal/ItemModal';
+import ItemModal from '../../Modals/ItemModal';
 
 //Firebase
 import { db } from '../../../Firebase/firebase';
@@ -32,8 +32,7 @@ const Items = () => {
 
   function removeItem() {
     for (var key in selectedItem) {
-      console.log("Item ID: " + selectedItem[key].id);
-      //deleteItem(selectedCoupons[key].id)
+      deleteItem(selectedItem[key].id)
     }
   }
 
