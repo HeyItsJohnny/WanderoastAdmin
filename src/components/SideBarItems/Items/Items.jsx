@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 //Light/Dark Mode
 import { ColorModeContext, useMode, tokens } from '../../../theme';
@@ -51,7 +51,7 @@ const Items = () => {
               <Box m="20px">
                   {/* HEADER */}
                   <Box display="flex" justifyContent="space-between" alignItems="center">
-                    <Header title="ITEMS" subtitle='There is no "I" in team. But there is a "me" in that bitch.' />
+                    <Header title="ITEMS" subtitle='Single click to check the box, double click to view item details.' />
                     <Box>
                       <ItemModal />
                       <Button

@@ -138,7 +138,7 @@ const CouponModal = () => {
                         <MenuItem value="Percent">Percent (%)</MenuItem>
                         <MenuItem value="Amount">Dollar Amount ($)</MenuItem>
                     </Select>
-                </FormControl>
+            </FormControl>
             </DialogContent>
             <DialogActions>
                 <Button sx={{

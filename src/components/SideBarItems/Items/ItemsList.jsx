@@ -4,6 +4,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../../theme";
 import { db } from '../../../Firebase/firebase';
 import { collection, query, onSnapshot} from 'firebase/firestore';
+import { useNavigate } from 'react-router-dom';
 
 const ItemsList = ({itemsToRemove}) => {
 
@@ -11,6 +12,7 @@ const ItemsList = ({itemsToRemove}) => {
   const colors = tokens(theme.palette.mode);
 
   const [items, setItems] = useState([]);
+  const navigate = useNavigate();
 
   const fetchItemData = async ()=>{
       const couponsCollection = query(collection(db,'items'));
@@ -62,7 +64,7 @@ const ItemsList = ({itemsToRemove}) => {
   };
 
   const handleRowClick = (params) => {
-    alert(`ROW "${params.row.Name}" clicked`);
+    navigate("/itemdetails/" + params.row.id);
   };
 
   return (
@@ -102,7 +104,7 @@ const ItemsList = ({itemsToRemove}) => {
             columns={columns} 
             pageSize={20}
             onSelectionModelChange={(ids) => onRowsSelectionHandler(ids)}
-            onRowClick={handleRowClick} {...items}
+            onRowDoubleClick={handleRowClick}
         />
     </Box>
   </Box>
