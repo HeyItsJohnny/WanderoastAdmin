@@ -83,11 +83,33 @@ const ItemModal = () => {
            ImageName: "",
            ImageSize: ""
         });
-        addItemSizes(docRef.id);
+        addItemSizes(docRef.id, data);
     }
 
-    async function addItemSizes(ItemID) {
+    function addItemSizes(ItemID, data) {
+        if (data.target.bag340.value !== "") {
+            addSizeToDB(ItemID, "340G", data.target.bag340.value);
+        }
+        if (data.target.bag1000.value !== "") {
+            addSizeToDB(ItemID, "1000G", data.target.bag1000.value);
+        }
+        if (data.target.cans12.value !== "") {
+            addSizeToDB(ItemID, "12 Cans", data.target.cans12.value);
+        }
+        if (data.target.cans24.value !== "") {
+            addSizeToDB(ItemID, "24 Cans", data.target.cans24.value);
+        }
+        if (data.target.giftboxprice.value !== "") {
+            addSizeToDB(ItemID, "1 Box", data.target.giftboxprice.value);
+        }
+        
+    }
 
+    async function addSizeToDB(ItemID, name, price) {
+        await addDoc(collection(db, "items", ItemID, "sizes"), {
+            Name: name,
+            Price: price
+         });
     }
   return (
     <>
@@ -173,6 +195,52 @@ const ItemModal = () => {
             />
         </DialogContent>
         <DialogContent>
+            <DialogContentText>
+                Bag Prices
+            </DialogContentText>
+            <TextField
+                autoFocus
+                margin="dense"
+                id="bag340"
+                label="340g Bag"
+                type="number"
+                fullWidth
+                variant="standard"
+            />
+            <TextField
+                autoFocus
+                margin="dense"
+                id="bag1000"
+                label="1000g Bag"
+                type="number"
+                fullWidth
+                variant="standard"
+            />
+        </DialogContent>
+        <DialogContent>
+            <DialogContentText>
+                Nitro Cold Coffee Can Prices
+            </DialogContentText>
+            <TextField
+                autoFocus
+                margin="dense"
+                id="cans12"
+                label="12 Cans"
+                type="number"
+                fullWidth
+                variant="standard"
+            />
+            <TextField
+                autoFocus
+                margin="dense"
+                id="cans24"
+                label="24 Cans"
+                type="number"
+                fullWidth
+                variant="standard"
+            />
+        </DialogContent>
+        <DialogContent>
             <FormControl fullWidth>
                 <InputLabel id="demo-simple-select-label">Item Type</InputLabel>
                     <Select
@@ -194,6 +262,15 @@ const ItemModal = () => {
             <DialogContentText>
                 Giftbox
             </DialogContentText>
+            <TextField
+                autoFocus
+                margin="dense"
+                id="giftboxprice"
+                label="Gift Box Price"
+                type="number"
+                fullWidth
+                variant="standard"
+            />
             <TextField
                 autoFocus
                 margin="dense"
