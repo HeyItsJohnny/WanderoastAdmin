@@ -7,12 +7,14 @@ import { getDoc, doc, deleteDoc } from 'firebase/firestore';
 import { ColorModeContext, useMode, tokens } from '../../../theme';
 import { Box, CssBaseline, ThemeProvider, Button } from '@mui/material';
 
+
 //Components
 import Topbar from "../../NAVBars/TopBar";
 import Sidebar from "../../NAVBars/SideBar";
 import Header from "../../Header/Header";
 import ItemDetailsSizeList from './ItemDetailsSizeList';
 import ItemSizeModal from '../../Modals/ItemSizeModal';
+import ItemDetailsForm from './ItemDetailsForm';
 
 //Icons
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
@@ -56,7 +58,6 @@ const ItemDetails = () => {
   }, []);
 
 
-
   return (
     <ColorModeContext.Provider value={colorMode}>
     <ThemeProvider theme={theme}>
@@ -89,7 +90,9 @@ const ItemDetails = () => {
                       </Button>
                     </Box>
                   </Box>
+                  <ItemDetailsForm />
               </Box>
+                
               <div className='w-100 text-center mt-2'>
                 <ItemDetailsSizeList itemid={itemid} itemSizesToRemove={itemSizesToRemove}/>
               </div>
