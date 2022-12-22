@@ -4,7 +4,7 @@ import React, {useState, useEffect} from 'react';
 import { Box, Button, TextField } from "@mui/material";
 
 //FORM
-import { Formik } from "formik";
+import { useFormik } from 'formik';
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import InputLabel from '@mui/material/InputLabel';
@@ -16,64 +16,112 @@ import FormControl from '@mui/material/FormControl';
 import { db } from '../../../Firebase/firebase';
 import { getDoc, doc, deleteDoc } from 'firebase/firestore';
 
+import { useMode, tokens } from '../../../theme';
+import { itemSchema } from '../../../schemas';
+
 const ItemDetailsForm = ({item}) => {
+    const [theme ] = useMode();
+    const colors = tokens(theme.palette.mode);
+
     const isNonMobile = useMediaQuery("(min-width:600px)");
-    //const [item, setItem] = useState({});
     const [itemType, setItemType] = useState('');
+    const [nameValue, setNameValue] = useState("");
+
+    const onSubmit = (values, actions) => {
+        console.log(values);
+        console.log(actions);
+    }
+
+    //Formik
+    const {values, errors, handleBlur, handleChange, handleSubmit} = useFormik({
+        initialValues: {
+            name: item.Name,
+            description: item.Description
+        },
+        validationSchema: itemSchema,
+        onSubmit,
+    })
+
+    //console.log(values);
+
+    
 
     /*
-    const setItemFromURL = async () => {
-        try {
-            const itemRef = doc(db, "items", itemid);
-            const itemSnap = await getDoc(itemRef);
-            if (itemSnap.exists()) {
-                setItem(itemSnap.data());
-            }
-        } catch (err) {
-            alert(err);
-        }
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log("HIT..");
+        console.log(e.target.name.value);
     };
     */
-   console.log(item);
-
-    const handleFormSubmit = (values) => {
-        console.log("HIT..");
-        console.log(values);
-    };
 
     const handleItemTypeChange = (event) => {
+        
         setItemType(event.target.value);
     };
 
-    //Form Functions
-
-    const checkoutSchema = yup.object().shape({
-        name: yup.string().required("required"),
-        description: yup.string().required("required"),
-        region: yup.string(),
-        elevation: yup.string(),
-        itemType: yup.string().required("required"),
-        itemId: yup.number().required("required"),
-        giftBoxItems: yup.number()
-    });
-
-    const initialValues = {
-        name: item.Name,
-        description: item.Description,
-        region: "",
-        elevation: "",
-        itemType: "",
-        itemId: 0,
-        giftBoxItems: 0
-    };
-
-    /*
     useEffect(() => {
-        setItemFromURL();
-    }, []);
-    */
+        //console.log("Item: " + item.Name);
+        
+        setNameValue(item.Name);
+      }, []);
     
     return (
+        <form onSubmit={handleSubmit} autoComplete="off">
+            <Box
+                display="grid"
+                gap="30px"
+                gridTemplateColumns="repeat(4, minmax(0, 1fr))"
+                sx={{
+                "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
+                }}
+            >
+                <TextField
+                    autoFocus
+                    required
+                    margin="dense"
+                    id="name"
+                    label="Name"
+                    type="text"
+                    fullWidth
+                    variant="filled"
+                    value={values.name}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    sx={{ gridColumn: "span 2" }}
+                />
+                <TextField
+                    autoFocus
+                    required
+                    margin="dense"
+                    id="description"
+                    label="Description"
+                    type="text"
+                    fullWidth
+                    variant="filled"
+                    value={values.description}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    sx={{ gridColumn: "span 2" }}
+                />
+                <Box display="flex" justifyContent="end" mt="20px">
+
+                    <Button 
+                        variant="contained"
+                        sx={{
+                            backgroundColor: colors.greenAccent[700],
+                            color: colors.grey[100],
+                            fontSize: "14px",
+                            fontWeight: "bold",
+                            padding: "10px 20px"
+                        }}
+                        type="submit">Save
+                    </Button>
+
+                </Box>
+            </Box>
+        </form>
+    )
+        {/*
         <Formik
             onSubmit={handleFormSubmit}
             initialValues={initialValues}
@@ -209,7 +257,8 @@ const ItemDetailsForm = ({item}) => {
                 </form>
             )}
             </Formik>
-    )
+        */}
+    
 }
 
 export default ItemDetailsForm
