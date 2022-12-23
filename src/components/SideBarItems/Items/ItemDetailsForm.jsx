@@ -32,41 +32,35 @@ const ItemDetailsForm = ({item}) => {
         console.log(actions);
     }
 
+    useEffect(() => {
+        setNameValue(item.Name);
+    }, []);
+
     //Formik
-    const {values, errors, handleBlur, handleChange, handleSubmit} = useFormik({
+    const formik = useFormik({
         initialValues: {
             name: item.Name,
-            description: item.Description
+            description: item.Description,
+            region: item.Region,
+            elevation: item.Elevation,
+            background: item.Background,
+            itemid: item.ItemShoppingCartID,
+            itemtype: item.ItemType,
+            giftboxitems: item.GiftBoxItems
         },
+        enableReinitialize: true,
         validationSchema: itemSchema,
         onSubmit,
     })
 
-    //console.log(values);
-
-    
-
-    /*
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log("HIT..");
-        console.log(e.target.name.value);
-    };
-    */
-
     const handleItemTypeChange = (event) => {
-        
         setItemType(event.target.value);
     };
 
-    useEffect(() => {
-        //console.log("Item: " + item.Name);
-        
-        setNameValue(item.Name);
-      }, []);
+    
     
     return (
-        <form onSubmit={handleSubmit} autoComplete="off">
+        <form onSubmit={formik.handleSubmit} autoComplete="off">
             <Box
                 display="grid"
                 gap="30px"
@@ -76,21 +70,35 @@ const ItemDetailsForm = ({item}) => {
                 }}
             >
                 <TextField
-                    autoFocus
-                    required
+                    InputLabelProps={{ shrink: true }}
                     margin="dense"
+                    required
                     id="name"
                     label="Name"
                     type="text"
                     fullWidth
                     variant="filled"
-                    value={values.name}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
+                    value={formik.values.name}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                     sx={{ gridColumn: "span 2" }}
                 />
                 <TextField
-                    autoFocus
+                    InputLabelProps={{ shrink: true }}
+                    margin="dense"
+                    required
+                    id="itemid"
+                    label="Item ID"
+                    type="number"
+                    fullWidth
+                    variant="filled"
+                    value={formik.values.itemid}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    sx={{ gridColumn: "span 2" }}
+                />
+                <TextField
+                    InputLabelProps={{ shrink: true }}
                     required
                     margin="dense"
                     id="description"
@@ -98,26 +106,96 @@ const ItemDetailsForm = ({item}) => {
                     type="text"
                     fullWidth
                     variant="filled"
-                    value={values.description}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
+                    value={formik.values.description}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    sx={{ gridColumn: "span 2" }}
+                    multiline
+                    rows={4}
+                />
+                <TextField
+                    InputLabelProps={{ shrink: true }}
+                    required
+                    margin="dense"
+                    id="background"
+                    label="Background"
+                    type="text"
+                    fullWidth
+                    variant="filled"
+                    value={formik.values.background}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    sx={{ gridColumn: "span 2" }}
+                    multiline
+                    rows={4}
+                />
+                <TextField
+                    InputLabelProps={{ shrink: true }}
+                    margin="dense"
+                    id="region"
+                    label="Region"
+                    type="text"
+                    fullWidth
+                    variant="filled"
+                    value={formik.values.region}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                     sx={{ gridColumn: "span 2" }}
                 />
-                <Box display="flex" justifyContent="end" mt="20px">
-
-                    <Button 
-                        variant="contained"
-                        sx={{
-                            backgroundColor: colors.greenAccent[700],
-                            color: colors.grey[100],
-                            fontSize: "14px",
-                            fontWeight: "bold",
-                            padding: "10px 20px"
-                        }}
-                        type="submit">Save
-                    </Button>
-
-                </Box>
+                <TextField
+                    InputLabelProps={{ shrink: true }}
+                    margin="dense"
+                    id="elevation"
+                    label="Elevation"
+                    type="text"
+                    fullWidth
+                    variant="filled"
+                    value={formik.values.elevation}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    sx={{ gridColumn: "span 2" }}
+                />
+                <TextField
+                    InputLabelProps={{ shrink: true }}
+                    margin="dense"
+                    id="giftboxitems"
+                    label="# of Giftbox Items"
+                    type="number"
+                    fullWidth
+                    variant="filled"
+                    value={formik.values.giftboxitems}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    sx={{ gridColumn: "span 2" }}
+                />
+                <FormControl fullWidth>
+                    <InputLabel>Item Type</InputLabel>
+                        <Select
+                            id="itemtype"
+                            value={formik.values.itemtype}
+                            label="Item Type"
+                            onChange={formik.handleChange}
+                            required
+                        >
+                            <MenuItem value="Coffee Beans">Coffee Beans</MenuItem>
+                            <MenuItem value="Nitro Cold Coffee">Nitro Cold Coffee</MenuItem>
+                            <MenuItem value="Gift Box">Gift Box</MenuItem>
+                            <MenuItem value="Other">Other</MenuItem>
+                        </Select>
+                </FormControl>
+            </Box>
+            <Box display="flex" justifyContent="end" mt="20px">
+                <Button 
+                    variant="contained"
+                    sx={{
+                        backgroundColor: colors.greenAccent[700],
+                        color: colors.grey[100],
+                        fontSize: "14px",
+                        fontWeight: "bold",
+                        padding: "10px 20px"
+                    }}
+                    type="submit">Save
+                </Button>
             </Box>
         </form>
     )
