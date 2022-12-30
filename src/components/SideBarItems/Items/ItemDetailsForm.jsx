@@ -1,43 +1,76 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
+import { useNavigate } from "react-router-dom";
 
 //UI
 import { Box, Button, TextField } from "@mui/material";
 
 //FORM
 import { useFormik, Field, FormikProvider } from 'formik';
-import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
 
 //DB
 import { db } from '../../../Firebase/firebase';
-import { getDoc, doc, deleteDoc } from 'firebase/firestore';
+import { doc, updateDoc } from 'firebase/firestore';
 
 import { useMode, tokens } from '../../../theme';
 import { itemSchema } from '../../../schemas';
 
-const ItemDetailsForm = ({item}) => {
+const ItemDetailsForm = ({item, itemid}) => {
     const [theme ] = useMode();
     const colors = tokens(theme.palette.mode);
+    const [giftbox, setGiftbox] = useState(false);
+    const [nitroCoffee, setNitroCoffee] = useState(false);
+    const [displayNitroCoffeeLink, setDisplayNitroCoffeeLink] = useState(false);
+    const navigate = useNavigate();
 
     const isNonMobile = useMediaQuery("(min-width:600px)");
-    const [itemType, setItemType] = useState(item.ItemType);
-    const [nameValue, setNameValue] = useState("");
 
     const onSubmit = (values, actions) => {
-        console.log(values);
-        console.log(actions);
+        if (values.itemtype === "Coffee Beans") {
+            setGiftbox(false);
+            setNitroCoffee(false);
+            setDisplayNitroCoffeeLink(false);
+        } else if (values.itemtype === "Nitro Cold Coffee") {
+            setGiftbox(false);
+            setNitroCoffee(true);
+            setDisplayNitroCoffeeLink(true);
+        } else if (values.itemtype === "Gift Box") {
+            setGiftbox(true);
+            setNitroCoffee(false);
+            setDisplayNitroCoffeeLink(false);
+        } else if (values.itemtype === "Other") {
+            setGiftbox(false);
+            setNitroCoffee(false);
+            setDisplayNitroCoffeeLink(false);
+        }
+        updateItemDoc(values);
     }
 
-    useEffect(() => {
-        //setItemType(item.ItemType);
-    }, []);
+    async function updateItemDoc(values) {
+        const itemRef = doc(db, "items", itemid);
+        await updateDoc(itemRef, {
+            Background: values.background,
+            CoffeeItem: true,
+            Description: values.description,
+            DisplayNitroCoffeeLink: displayNitroCoffeeLink,
+            Elevation: values.elevation,
+            EnableItem: true,
+            GiftBox: giftbox,
+            GiftBoxItems: values.giftboxitems,
+            ItemShoppingCartID: values.itemid,
+            Name: values.name,
+            NitroColdCoffee: nitroCoffee,
+            Region: values.region,
+            ItemType: values.itemtype,
+            ImageFilePath: "",
+            ImageName: "",
+            ImageSize: ""
+        });
+        navigate("/items");
+    }
 
     //Formik
-    console.log("Item Type: " + item.ItemType);
     const formik = useFormik({
         initialValues: {
             name: item.Name,
@@ -53,12 +86,6 @@ const ItemDetailsForm = ({item}) => {
         validationSchema: itemSchema,
         onSubmit,
     })
-
-    const handleItemTypeChange = (event) => {
-        setItemType(event.target.value);
-    };
-
-    
     
     return (
         <FormikProvider value={formik}>
@@ -117,7 +144,6 @@ const ItemDetailsForm = ({item}) => {
                 />
                 <TextField
                     InputLabelProps={{ shrink: true }}
-                    required
                     margin="dense"
                     id="background"
                     label="Background"
@@ -171,45 +197,38 @@ const ItemDetailsForm = ({item}) => {
                     sx={{ gridColumn: "span 2" }}
                 />
                 <FormControl fullWidth>
-                        <TextField
-                            InputLabelProps={{ shrink: true }}
-                            margin="dense"
-                            id="itemtype"
-                            label="Item Type"
-                            fullWidth
-                            variant="filled"
-                            value={formik.values.itemtype}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            sx={{ gridColumn: "span 2" }}
-                            select
-                        >
-                            <MenuItem value="Coffee Beans">Coffee Beans</MenuItem>
-                            <MenuItem value="Nitro Cold Coffee">Nitro Cold Coffee</MenuItem>
-                            <MenuItem value="Gift Box">Gift Box</MenuItem>
-                            <MenuItem value="Other">Other</MenuItem>
-                        </TextField>
+                    <TextField
+                        InputLabelProps={{ shrink: true }}
+                        InputProps={{ readOnly: true }}
+                        margin="dense"
+                        id="itemtype"
+                        label="Item Type"
+                        type="text"
+                        fullWidth
+                        variant="filled"
+                        value={formik.values.itemtype}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        sx={{ gridColumn: "span 2" }}
+                        
+                    />
+                    <label>
+                    <Field type="radio" name="itemtype" value="Coffee Beans" />
+                        Coffee Beans
+                    </label>
+                    <label>
+                    <Field type="radio" name="itemtype" value="Nitro Cold Coffee" />
+                        Nitro Cold Coffee
+                    </label>
+                    <label>
+                    <Field type="radio" name="itemtype" value="Gift Box" />
+                        Gift Box
+                    </label>
+                    <label>
+                    <Field type="radio" name="itemtype" value="Other" />
+                        Other
+                    </label>
                 </FormControl>
-
-                {/*
-                <FormControl fullWidth>
-                    <InputLabel>Item Type</InputLabel>
-                        <Select
-                            id="itemtype"
-                            value={formik.values.itemtype}
-                            label="Item Type"
-                            onChange={formik.handleChange}
-                            fullWidth
-                            required
-                        >
-                            <MenuItem value="Coffee Beans">Coffee Beans</MenuItem>
-                            <MenuItem value="Nitro Cold Coffee">Nitro Cold Coffee</MenuItem>
-                            <MenuItem value="Gift Box">Gift Box</MenuItem>
-                            <MenuItem value="Other">Other</MenuItem>
-                        </Select>
-                </FormControl>
-            */}
-
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
                 <Button 
@@ -226,6 +245,7 @@ const ItemDetailsForm = ({item}) => {
             </Box>
         </form>
         </FormikProvider>
+        
     )
 }
 

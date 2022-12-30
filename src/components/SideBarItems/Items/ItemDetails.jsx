@@ -90,7 +90,7 @@ const ItemDetails = () => {
                       </Button>
                     </Box>
                   </Box>
-                  <ItemDetailsForm item={item} />
+                  <ItemDetailsForm item={item} itemid={itemid}/>
               </Box>
                 
               <div className='w-100 text-center mt-2'>

@@ -66,7 +66,7 @@ const ItemModal = () => {
 
     async function addItemDoc(data) {
         const docRef = await addDoc(collection(db, "items"), {
-           Background: "",
+           Background: data.target.background.value,
            CoffeeItem: true,
            Description: data.target.description.value,
            DisplayNitroCoffeeLink: displayNitroCoffeeLink,
