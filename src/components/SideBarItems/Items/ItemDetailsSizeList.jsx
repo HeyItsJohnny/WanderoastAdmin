@@ -2,14 +2,22 @@ import React, { useState, useEffect } from 'react';
 import { db } from '../../../Firebase/firebase';
 import { collection, query, onSnapshot } from 'firebase/firestore';
 import { tokens } from "../../../theme";
-import { Box, useTheme } from "@mui/material";
+import { Box, useTheme, Button } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
+import { getDoc, doc, deleteDoc } from 'firebase/firestore';
+import Header from "../../Header/Header";
+
+import ItemSizeModal from '../../Modals/ItemSizeModal';
+
+//Icons
+import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 
 const ItemDetailsSizeList = ({itemid, itemSizesToRemove}) => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
 
     const [itemSizes, setItemSizes] = useState([]);
+    var selectedItemSize = [];
 
     const fetchItemSizeData = async ()=>{
         const couponsCollection = query(collection(db,'items',itemid,'sizes'));
@@ -41,9 +49,19 @@ const ItemDetailsSizeList = ({itemid, itemSizesToRemove}) => {
     ]
 
     const onRowsSelectionHandler = (ids) => {
-         const selectedRowsData = ids.map((id) => itemSizes.find((row) => row.id === id));
-         itemSizesToRemove({selectedRowsData});
+        selectedItemSize = ids.map((id) => itemSizes.find((row) => row.id === id));
+        //itemSizesToRemove({selectedRowsData});
     };
+
+    function removeItemSize() {
+        for (var key in selectedItemSize) {
+            deleteItemSize(selectedItemSize[key].id)
+        }
+    }
+
+    async function deleteItemSize(itemID) {
+        await deleteDoc(doc(db,"items",itemid,"sizes",itemID));
+    }
 
     useEffect(() => {
         fetchItemSizeData();
@@ -51,6 +69,27 @@ const ItemDetailsSizeList = ({itemid, itemSizesToRemove}) => {
 
     return (
         <Box m="20px">
+            <Box display="flex" justifyContent="left" alignItems="center">
+                <Header title="Item Sizes" subtitle='' />  
+            </Box>
+            <Box display="flex" justifyContent="left" alignItems="center">
+                <ItemSizeModal itemid={itemid}/>
+                <Button
+                    sx={{
+                        backgroundColor: colors.grey[700],
+                        color: colors.grey[100],
+                        fontSize: "14px",
+                        fontWeight: "bold",
+                        padding: "10px 20px",
+                    }}
+                    onClick={() => { removeItemSize() }
+                    }
+                    >
+                    <RemoveCircleIcon sx={{ mr: "10px" }} />
+                    Remove Size
+                </Button>
+            </Box>
+            
             <Box
                 m="20px 0 0 0"
                 height="20vh"
