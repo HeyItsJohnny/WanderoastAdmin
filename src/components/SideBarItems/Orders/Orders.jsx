@@ -13,7 +13,6 @@ import OrdersList from './OrdersList';
 const Orders = () => {
   const [theme, colorMode] = useMode();
 
-
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>

@@ -13,6 +13,7 @@ import NewTextOrder from "./SideBarItems/NewTextOrder/NewTextOrder";
 import Orders from "./SideBarItems/Orders/Orders";
 import Subscriptions from "./SideBarItems/Subscriptions/Subscriptions";
 import ItemDetails from "./SideBarItems/Items/ItemDetails";
+import OrderDetails from "./SideBarItems/Orders/OrderDetails";
 
 import { AuthProvider } from "./Contexts/AuthContext";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -65,6 +66,11 @@ function App() {
               <Route exact path="/orders" element={
                 <PrivateRoute>
                   <Orders />
+                </PrivateRoute>
+              } />
+              <Route exact path="/orderdetails/:orderid" element={
+                <PrivateRoute>
+                  <OrderDetails />
                 </PrivateRoute>
               } />
               <Route exact path="/subscriptions" element={

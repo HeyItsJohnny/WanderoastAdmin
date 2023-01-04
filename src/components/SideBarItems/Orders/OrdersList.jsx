@@ -60,7 +60,7 @@ const OrdersList = () => {
       };
     
       const handleRowClick = (params) => {
-        //navigate("/itemdetails/" + params.row.id);
+        navigate("/orderdetails/" + params.row.id);
       };
 
     return (
