@@ -41,28 +41,27 @@ const ItemDetails = () => {
 
   return (
     <ColorModeContext.Provider value={colorMode}>
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-        <div className="app">
-          <Sidebar />
-          <main className="content">
-            <Topbar />
-              <Box m="20px">
-                  {/* HEADER */}
-                  <Box display="flex" justifyContent="space-between" alignItems="center">
-                    <Header title={item.Name} subtitle='' />
-                  </Box>
-                  <ItemDetailsForm item={item} itemid={itemid}/>
-              </Box>
-                
-              <div className='w-100 text-center mt-2'>
-                <ItemDetailsSizeList itemid={itemid}/>
-              </div>
-          </main>
-        </div>
-    </ThemeProvider>
-  </ColorModeContext.Provider>
-    
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+          <div className="app">
+            <Sidebar />
+            <main className="content">
+              <Topbar />
+                <Box m="20px">
+                    {/* HEADER */}
+                    <Box display="flex" justifyContent="space-between" alignItems="center">
+                      <Header title={item.Name} subtitle='' />
+                    </Box>
+                    <ItemDetailsForm item={item} itemid={itemid}/>
+                </Box>
+                  
+                <div className='w-100 text-center mt-2'>
+                  <ItemDetailsSizeList itemid={itemid}/>
+                </div>
+            </main>
+          </div>
+      </ThemeProvider>
+    </ColorModeContext.Provider>
   )
 }
 
