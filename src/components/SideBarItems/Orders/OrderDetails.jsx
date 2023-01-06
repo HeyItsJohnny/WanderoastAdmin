@@ -12,6 +12,7 @@ import Topbar from "../../NAVBars/TopBar";
 import Sidebar from "../../NAVBars/SideBar";
 import Header from "../../Header/Header";
 import OrderLinesList from './OrderLinesList';
+import OrderDetailsForm from './OrderDetailsForm';
 
 const OrderDetails = () => {
     const [theme, colorMode] = useMode();
@@ -47,8 +48,9 @@ const OrderDetails = () => {
                         <Box m="20px">
                             {/* HEADER */}
                             <Box display="flex" justifyContent="space-between" alignItems="center">
-                            <Header title={"Order: " + order.FullName} subtitle='' />
+                                <Header title={"Order: " + order.FullName + " (" + order.OrderType + ")"} subtitle='' />
                             </Box>
+                            <OrderDetailsForm order={order} itemid={orderid}/>
                         </Box>
                         
                         <div className='w-100 text-center mt-2'>
