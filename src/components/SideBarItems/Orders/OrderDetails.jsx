@@ -50,7 +50,7 @@ const OrderDetails = () => {
                             <Box display="flex" justifyContent="space-between" alignItems="center">
                                 <Header title={"Order: " + order.FullName + " (" + order.OrderType + ")"} subtitle='' />
                             </Box>
-                            <OrderDetailsForm order={order} itemid={orderid}/>
+                            <OrderDetailsForm order={order} orderid={orderid}/>
                         </Box>
                         
                         <div className='w-100 text-center mt-2'>

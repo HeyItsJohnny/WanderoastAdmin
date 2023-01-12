@@ -26,35 +26,40 @@ const OrderDetailsForm = ({order, orderid}) => {
 
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
-  const onSubmit = (e, values, actions) => {
-    e.preventDefault();
+  const onSubmit = (values, actions) => {
     console.log("UPDATE");
-    console.log(values);
-    //updateOrderDoc(values);
+    console.log(values.FirstName);
+    updateOrderDoc(values);
   }
 
   async function updateOrderDoc(values) {
-    const itemRef = doc(db, "orders", orderid);
-    await updateDoc(itemRef, {
-      CustomerFirstName: values.FirstName,
-      CustomerLastName: values.LastName,
-      CustomerNotes: values.CustomerNotes,
-      Email: values.Email,
-      FullName: values.FirstName + " " + values.LastName,
-      InternalComments: values.InternalComments,
-      OrderType: values.OrderType,
-      PaymentStatus: values.PaymentStatus,
-      PhoneNo: values.PhoneNo,
-      ShippingAddress1: values.ShipAddress1,
-      ShippingAddress2: values.ShipAddress2,
-      ShippingCity: values.ShipCity,
-      ShippingName: values.ShipName,
-      ShippingState: values.ShipState,
-      ShippingZipCode: values.ShipZip,
-      Status: values.OrderStatus,
-      TrackingNo: values.TrackingNo
-    });
-    navigate("/orders");
+    //console.log("Order ID: " + orderid);  //Order ID is identified
+    try{
+      const itemRef = doc(db, "orders", orderid);
+      await updateDoc(itemRef, {
+        CustomerFirstName: values.FirstName,
+        CustomerLastName: values.LastName,
+        CustomerNotes: values.CustomerNotes,
+        Email: values.Email,
+        FullName: values.FirstName + " " + values.LastName,
+        InternalComments: values.InternalComments,
+        OrderType: values.OrderType,
+        PaymentStatus: values.PaymentStatus,
+        PhoneNo: values.PhoneNo,
+        ShippingAddress1: values.ShipAddress1,
+        ShippingAddress2: values.ShipAddress2,
+        ShippingCity: values.ShipCity,
+        ShippingName: values.ShipName,
+        ShippingState: values.ShipState,
+        ShippingZipCode: values.ShipZip,
+        //Status: values.OrderStatus,
+        TrackingNo: values.TrackingNo
+      });
+      navigate("/orders");
+    } catch(e) {
+      alert("error: " + e)
+    }
+     
   }
 
   const formik = useFormik({
@@ -68,8 +73,9 @@ const OrderDetailsForm = ({order, orderid}) => {
         InternalComments: order.InternalComments,
         OrderType: order.OrderType,
         OrderDate: order.OrderDate && order.OrderDate.toDate().toDateString(),
-        //PaymentStatus: order.PaymentStatus,
+        PaymentStatus: order.PaymentStatus,
         PhoneNo: order.PhoneNo,
+        ShipName: order.ShippingName,
         ShipAddress1: order.ShippingAddress1,
         ShipAddress2: order.ShippingAddress2,
         ShipCity: order.ShippingCity,
@@ -90,6 +96,7 @@ const OrderDetailsForm = ({order, orderid}) => {
     return (
       <FormikProvider value={formik}>
         <form onSubmit={formik.handleSubmit} autoComplete="off">
+          
           <Box
             display="grid"
             gap="30px"
@@ -126,6 +133,7 @@ const OrderDetailsForm = ({order, orderid}) => {
               onBlur={formik.handleBlur}
               sx={{ gridColumn: "span 2" }}
             />
+            
             <TextField
               InputLabelProps={{ shrink: true }}
               InputProps={{ readOnly: true }}
@@ -154,6 +162,7 @@ const OrderDetailsForm = ({order, orderid}) => {
               onBlur={formik.handleBlur}
               sx={{ gridColumn: "span 2" }}
             />
+            
             <TextField
               InputLabelProps={{ shrink: true }}
               margin="dense"
@@ -211,6 +220,35 @@ const OrderDetailsForm = ({order, orderid}) => {
               sx={{ gridColumn: "span 2" }}
               multiline
               rows={4}
+            />
+            <TextField
+              InputLabelProps={{ shrink: true }}
+              margin="dense"
+              required
+              id="ShipName"
+              label="Shipping Name"
+              type="text"
+              fullWidth
+              variant="filled"
+              value={formik.values.ShipName}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              sx={{ gridColumn: "span 2" }}
+            />
+            
+            <TextField
+              InputLabelProps={{ shrink: true }}
+              InputProps={{ readOnly: true }}
+              margin="dense"
+              id="PaymentStatus"
+              label="PaymentStatus"
+              type="text"
+              fullWidth
+              variant="filled"
+              value={formik.values.PaymentStatus}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              sx={{ gridColumn: "span 2" }}
             />
             <TextField
               InputLabelProps={{ shrink: true }}
@@ -294,6 +332,7 @@ const OrderDetailsForm = ({order, orderid}) => {
               onBlur={formik.handleBlur}
               sx={{ gridColumn: "span 1" }}
             />
+            
             <TextField
               InputLabelProps={{ shrink: true }}
               InputProps={{ readOnly: true }}

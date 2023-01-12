@@ -15,8 +15,8 @@ export const itemSchema = yup.object().shape({
 
 export const orderSchema = yup.object().shape({
     FirstName: yup.string().required("Required"),
-    LastName: yup.string().requires("Required"),
-    ShipAddress1: yup.string().requires("Required"),
+    LastName: yup.string().required("Required"),
+    ShipAddress1: yup.string().required("Required"),
     ShipAddress2: yup.string(),
     Email: yup.string().required("Required"),
     PhoneNo: yup.string().required("Required"),
