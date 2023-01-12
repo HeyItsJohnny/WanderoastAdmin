@@ -12,3 +12,15 @@ export const itemSchema = yup.object().shape({
     giftboxitems: yup.number(),
     itemtype: yup.string()
 });
+
+export const orderSchema = yup.object().shape({
+    FirstName: yup.string().required("Required"),
+    LastName: yup.string().requires("Required"),
+    ShipAddress1: yup.string().requires("Required"),
+    ShipAddress2: yup.string(),
+    Email: yup.string().required("Required"),
+    PhoneNo: yup.string().required("Required"),
+    ShipCity: yup.string().required("Required"),
+    ShipState: yup.string().required("Required"),
+    ShipZip: yup.string().required("Required"),
+});

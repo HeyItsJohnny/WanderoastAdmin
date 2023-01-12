@@ -50,12 +50,12 @@ const OrderLinesList = ({orderid}) => {
         },
         {
             field: "UnitPrice", 
-            headerName: "Unit Price", 
+            headerName: "($) Unit Price", 
             flex: 1
         },
         {
             field: "LineAmount", 
-            headerName: "Total Amount", 
+            headerName: "($) Total Amount", 
             flex: 1
         }
     ]

@@ -14,7 +14,7 @@ import { db } from '../../../Firebase/firebase';
 import { doc, updateDoc } from 'firebase/firestore';
 
 import { useMode, tokens } from '../../../theme';
-import { itemSchema } from '../../../schemas';
+import { orderSchema } from '../../../schemas';
 
 //Components
 import Header from "../../Header/Header";
@@ -26,8 +26,11 @@ const OrderDetailsForm = ({order, orderid}) => {
 
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
-  const onSubmit = (values, actions) => {
-    updateOrderDoc(values);
+  const onSubmit = (e, values, actions) => {
+    e.preventDefault();
+    console.log("UPDATE");
+    console.log(values);
+    //updateOrderDoc(values);
   }
 
   async function updateOrderDoc(values) {
@@ -63,8 +66,8 @@ const OrderDetailsForm = ({order, orderid}) => {
         DiscountCode: order.DiscountCode,
         Email: order.Email,
         InternalComments: order.InternalComments,
-        //OrderType: order.OrderType,
-        //OrderDate: order.OrderDate,
+        OrderType: order.OrderType,
+        OrderDate: order.OrderDate && order.OrderDate.toDate().toDateString(),
         //PaymentStatus: order.PaymentStatus,
         PhoneNo: order.PhoneNo,
         ShipAddress1: order.ShippingAddress1,
@@ -80,7 +83,7 @@ const OrderDetailsForm = ({order, orderid}) => {
         TrackingNo: order.TrackingNo
     },
     enableReinitialize: true,
-    validationSchema: itemSchema,
+    validationSchema: orderSchema,
     onSubmit,
 })
 
@@ -119,6 +122,34 @@ const OrderDetailsForm = ({order, orderid}) => {
               fullWidth
               variant="filled"
               value={formik.values.LastName}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              sx={{ gridColumn: "span 2" }}
+            />
+            <TextField
+              InputLabelProps={{ shrink: true }}
+              InputProps={{ readOnly: true }}
+              margin="dense"
+              id="OrderDate"
+              label="Order Date"
+              type="text"
+              fullWidth
+              variant="filled"
+              value={formik.values.OrderDate}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              sx={{ gridColumn: "span 2" }}
+            />
+            <TextField
+              InputLabelProps={{ shrink: true }}
+              InputProps={{ readOnly: true }}
+              margin="dense"
+              id="OrderType"
+              label="Order Type"
+              type="text"
+              fullWidth
+              variant="filled"
+              value={formik.values.OrderType}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               sx={{ gridColumn: "span 2" }}
@@ -198,7 +229,6 @@ const OrderDetailsForm = ({order, orderid}) => {
             <TextField
               InputLabelProps={{ shrink: true }}
               margin="dense"
-              required
               id="ShipAddress2"
               label="Shipping Address 2"
               type="text"
@@ -254,7 +284,6 @@ const OrderDetailsForm = ({order, orderid}) => {
             <TextField
               InputLabelProps={{ shrink: true }}
               margin="dense"
-              required
               id="TrackingNo"
               label="Tracking #"
               type="text"
@@ -269,7 +298,6 @@ const OrderDetailsForm = ({order, orderid}) => {
               InputLabelProps={{ shrink: true }}
               InputProps={{ readOnly: true }}
               margin="dense"
-              required
               id="DiscountCode"
               label="Discount Code"
               type="text"
@@ -284,7 +312,6 @@ const OrderDetailsForm = ({order, orderid}) => {
               InputLabelProps={{ shrink: true }}
               InputProps={{ readOnly: true }}
               margin="dense"
-              required
               id="Discount"
               label="Discount ($)"
               type="number"
@@ -299,7 +326,6 @@ const OrderDetailsForm = ({order, orderid}) => {
               InputLabelProps={{ shrink: true }}
               InputProps={{ readOnly: true }}
               margin="dense"
-              required
               id="Subtotal"
               label="Subtotal"
               type="text"
@@ -314,7 +340,6 @@ const OrderDetailsForm = ({order, orderid}) => {
               InputLabelProps={{ shrink: true }}
               InputProps={{ readOnly: true }}
               margin="dense"
-              required
               id="ShippingCost"
               label="Shipping Cost"
               type="text"
@@ -329,7 +354,6 @@ const OrderDetailsForm = ({order, orderid}) => {
               InputLabelProps={{ shrink: true }}
               InputProps={{ readOnly: true }}
               margin="dense"
-              required
               id="Tax"
               label="Tax"
               type="text"
@@ -344,7 +368,6 @@ const OrderDetailsForm = ({order, orderid}) => {
               InputLabelProps={{ shrink: true }}
               InputProps={{ readOnly: true }}
               margin="dense"
-              required
               id="Total"
               label="Total"
               type="text"
@@ -355,6 +378,19 @@ const OrderDetailsForm = ({order, orderid}) => {
               onBlur={formik.handleBlur}
               sx={{ gridColumn: "span 1" }}
             />
+          </Box>
+          <Box display="flex" justifyContent="end" mt="20px">
+            <Button 
+                variant="contained"
+                sx={{
+                    backgroundColor: colors.greenAccent[700],
+                    color: colors.grey[100],
+                    fontSize: "14px",
+                    fontWeight: "bold",
+                    padding: "10px 20px"
+                }}
+                type="submit">Save
+            </Button>
           </Box>
         </form>
       </FormikProvider>
