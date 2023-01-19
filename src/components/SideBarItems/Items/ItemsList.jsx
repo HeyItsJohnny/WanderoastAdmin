@@ -26,7 +26,7 @@ const ItemsList = ({itemsToRemove}) => {
             var itemData = {
                 id: doc.id,
                 Name: doc.data().Name,
-                EnableItem: doc.data().EnableItem,
+                ItemType: doc.data().ItemType,
                 HasImage: hasImage
             }
             itemsList.push(itemData);
@@ -42,8 +42,8 @@ const ItemsList = ({itemsToRemove}) => {
           flex: 1,
       },
       {
-          field: "EnableItem", 
-          headerName: "Enabled", 
+          field: "ItemType", 
+          headerName: "Item Type", 
           flex: 1
       },
       {

@@ -21,6 +21,7 @@ const OrdersList = () => {
                 var orderData = {
                     id: doc.id,
                     FullName: doc.data().FullName,
+                    Status: doc.data().Status,
                     OrderType: doc.data().OrderType,
                     Total: doc.data().Total
                 }
@@ -35,6 +36,11 @@ const OrdersList = () => {
             field: "FullName", 
             headerName: "Name", 
             flex: 1,
+        },
+        {
+            field: "Status", 
+            headerName: "Status", 
+            flex: 1
         },
         {
             field: "OrderType", 

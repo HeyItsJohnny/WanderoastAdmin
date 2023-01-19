@@ -52,7 +52,7 @@ const OrderDetailsForm = ({order, orderid}) => {
         ShippingName: values.ShipName,
         ShippingState: values.ShipState,
         ShippingZipCode: values.ShipZip,
-        //Status: values.OrderStatus,
+        Status: values.OrderStatus,
         TrackingNo: values.TrackingNo
       });
       navigate("/orders");
@@ -81,7 +81,7 @@ const OrderDetailsForm = ({order, orderid}) => {
         ShipCity: order.ShippingCity,
         ShipState: order.ShippingState,
         ShipZip: order.ShippingZipCode,
-        //OrderStatus: order.Status,
+        OrderStatus: order.Status,
         Subtotal: order.Subtotal,
         ShippingCost: order.ShippingCost,
         Tax: order.Tax,
@@ -96,7 +96,6 @@ const OrderDetailsForm = ({order, orderid}) => {
     return (
       <FormikProvider value={formik}>
         <form onSubmit={formik.handleSubmit} autoComplete="off">
-          
           <Box
             display="grid"
             gap="30px"
@@ -148,6 +147,43 @@ const OrderDetailsForm = ({order, orderid}) => {
               onBlur={formik.handleBlur}
               sx={{ gridColumn: "span 2" }}
             />
+            <FormControl fullWidth>
+              <TextField
+                  InputLabelProps={{ shrink: true }}
+                  InputProps={{ readOnly: true }}
+                  margin="dense"
+                  id="OrderStatus"
+                  label="Status"
+                  type="text"
+                  fullWidth
+                  variant="filled"
+                  value={formik.values.OrderStatus}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  sx={{ gridColumn: "span 1" }}
+                  
+              />
+              <label>
+                <Field type="radio" name="OrderStatus" value="Order Created" />
+                Order Created
+              </label>
+              <label>
+                <Field type="radio" name="OrderStatus" value="Incomplete/Issue" />
+                Incomplete/Issue
+              </label>
+              <label>
+                <Field type="radio" name="OrderStatus" value="Order Shipped" />
+                Order Shipped
+              </label>
+              <label>
+                <Field type="radio" name="OrderStatus" value="Delivered" />
+                Delivered
+              </label>
+              <label>
+                <Field type="radio" name="OrderStatus" value="Refunded" />
+                Refunded
+              </label>
+            </FormControl>
             <TextField
               InputLabelProps={{ shrink: true }}
               InputProps={{ readOnly: true }}
@@ -160,9 +196,8 @@ const OrderDetailsForm = ({order, orderid}) => {
               value={formik.values.OrderType}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              sx={{ gridColumn: "span 2" }}
+              sx={{ gridColumn: "span 1" }}
             />
-            
             <TextField
               InputLabelProps={{ shrink: true }}
               margin="dense"
