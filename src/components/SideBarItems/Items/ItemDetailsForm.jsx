@@ -78,7 +78,6 @@ const ItemDetailsForm = ({item, itemid}) => {
         uploadBytes(imageRef, imageUpload).then((snapshot) => {
             getDownloadURL(snapshot.ref).then((url) => {
                 //Add Image to DB
-                console.log(url);
                 updateItemPicture(url,imageUpload.name);
             });
         });

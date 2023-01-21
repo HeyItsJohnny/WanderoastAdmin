@@ -48,6 +48,11 @@ function App() {
                   <Customers />
                 </PrivateRoute>
               } />
+              <Route exact path="/customerdetails/:customerid" element={
+                <PrivateRoute>
+                  <ItemDetails />
+                </PrivateRoute>
+              } />
               <Route exact path="/items" element={
                 <PrivateRoute>
                   <Items />

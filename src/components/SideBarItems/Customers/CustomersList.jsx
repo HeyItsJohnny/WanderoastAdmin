@@ -6,62 +6,67 @@ import { db } from '../../../Firebase/firebase';
 import { collection, query, onSnapshot, orderBy} from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 
-const OrdersList = () => {
+const CustomersList = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
 
-    const [orders, setOrders] = useState([]);
+    const [customers, setCustomers] = useState([]);
     const navigate = useNavigate();
 
-    const fetchOrderData = async ()=>{
-        const couponsCollection = query(collection(db,'orders'),orderBy("OrderDate", "desc"));
-        onSnapshot(couponsCollection, (querySnapshot) => {
-            const ordersList = [];
+    const fetchCustomerData = async ()=>{
+        const customersCollection = query(collection(db,'customer-profile'),orderBy("CustomerName"));
+        onSnapshot(customersCollection, (querySnapshot) => {
+            const customersList = [];
             querySnapshot.forEach((doc) => {
-                var orderData = {
-                    id: doc.id,
-                    FullName: doc.data().FullName,
-                    Status: doc.data().Status,
-                    OrderType: doc.data().OrderType,
-                    Total: doc.data().Total
+                var hasSquareAccount = true;
+                if (doc.data().squareID === "") {
+                    hasSquareAccount = false;
                 }
-                ordersList.push(orderData);
+                var customerData = {
+                    id: doc.id,
+                    CustomerName: doc.data().CustomerName,
+                    Email: doc.data().Email,
+                    PhoneNo: doc.data().PhoneNo,
+                    HasSquareAccount: hasSquareAccount
+                }
+                customersList.push(customerData);
             });
-            setOrders(ordersList);
+            setCustomers(customersList);
         });
     }
 
     const columns = [
         {
-            field: "FullName", 
+            field: "CustomerName", 
             headerName: "Name", 
             flex: 1,
         },
         {
-            field: "Status", 
-            headerName: "Status", 
+            field: "Email", 
+            headerName: "Email", 
             flex: 1
         },
         {
-            field: "OrderType", 
-            headerName: "Order Type", 
+            field: "PhoneNo", 
+            headerName: "Phone #", 
             flex: 1
         }
         ,
         {
-            field: "Total", 
-            headerName: "Total ($)", 
+            field: "HasSquareAccount", 
+            headerName: "Square Account?", 
             flex: 1
         }
     ]
 
     useEffect(() => {
-        fetchOrderData();
-      }, []);
-    
-      const handleRowClick = (params) => {
-        navigate("/orderdetails/" + params.row.id);
-      };
+        fetchCustomerData();
+    }, []);
+
+    const handleRowClick = (params) => {
+        alert(params.row.id);
+        //navigate("/customerdetails/" + params.row.id);
+    };
 
     return (
         <Box m="20px">
@@ -95,7 +100,7 @@ const OrdersList = () => {
                 }}
             >
                 <DataGrid 
-                    rows={orders} 
+                    rows={customers} 
                     columns={columns} 
                     pageSize={50}
                     onRowDoubleClick={handleRowClick}
@@ -103,6 +108,6 @@ const OrdersList = () => {
             </Box>
         </Box>
     )
-    }
+}
 
-export default OrdersList
+export default CustomersList
