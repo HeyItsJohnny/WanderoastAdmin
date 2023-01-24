@@ -62,7 +62,7 @@ const ItemModal = () => {
 
         addItemDoc(e)
         handleReset();
-      };
+    };
 
     async function addItemDoc(data) {
         const docRef = await addDoc(collection(db, "items"), {
