@@ -16,6 +16,9 @@ import { doc, updateDoc } from 'firebase/firestore';
 import { useMode, tokens } from '../../../theme';
 import { itemSchema } from '../../../schemas';
 
+//Modals
+import ItemImageModal from '../../Modals/ItemImageModal';
+
 import {
     ref,
     uploadBytes,
@@ -94,7 +97,11 @@ const ItemDetailsForm = ({item, itemid}) => {
 
     function refreshPage() {
         window.location.reload(false);
-      }
+    }
+
+    function openItemImage() {
+        alert("Open Item Image");
+    }
     
     return (
         <>
@@ -275,6 +282,7 @@ const ItemDetailsForm = ({item, itemid}) => {
                         }}
                         type="submit">Save
                     </Button>
+                    <ItemImageModal itemid={itemid} />
                 </Box>
             </form>
         </FormikProvider>

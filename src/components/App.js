@@ -14,6 +14,7 @@ import Orders from "./SideBarItems/Orders/Orders";
 import Subscriptions from "./SideBarItems/Subscriptions/Subscriptions";
 import ItemDetails from "./SideBarItems/Items/ItemDetails";
 import OrderDetails from "./SideBarItems/Orders/OrderDetails";
+import CustomerDetails from './SideBarItems/Customers/CustomerDetails';
 
 import { AuthProvider } from "./Contexts/AuthContext";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -50,7 +51,7 @@ function App() {
               } />
               <Route exact path="/customerdetails/:customerid" element={
                 <PrivateRoute>
-                  <ItemDetails />
+                  <CustomerDetails />
                 </PrivateRoute>
               } />
               <Route exact path="/items" element={
