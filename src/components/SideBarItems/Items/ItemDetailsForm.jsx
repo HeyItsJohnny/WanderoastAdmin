@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import { useNavigate } from "react-router-dom";
 
 //UI
-import { Box, Button, TextField, Card, CardActionArea, CardMedia } from "@mui/material";
+import { Box, Button, TextField, Card, CardMedia } from "@mui/material";
 
 //FORM
 import { useFormik, Field, FormikProvider } from 'formik';
@@ -28,7 +28,7 @@ import {
 const ItemDetailsForm = ({item, itemid}) => {
     const [theme ] = useMode();
     const colors = tokens(theme.palette.mode);
-     const [imageUpload, setImageUpload] = useState(null);
+    const [imageUpload, setImageUpload] = useState(null);
     const navigate = useNavigate();
 
     const isNonMobile = useMediaQuery("(min-width:600px)");
@@ -97,10 +97,6 @@ const ItemDetailsForm = ({item, itemid}) => {
 
     function refreshPage() {
         window.location.reload(false);
-    }
-
-    function openItemImage() {
-        alert("Open Item Image");
     }
     
     return (

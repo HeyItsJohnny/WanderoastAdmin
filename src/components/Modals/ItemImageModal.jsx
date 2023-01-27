@@ -30,10 +30,6 @@ const ItemImageModal = ({itemid}) => {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    function openItemImage() {
-        alert("Open Item Image");
-    }
-
     async function setItemFromID() {
         try {
             const itemRef = doc(db, "items", itemid);
@@ -49,10 +45,14 @@ const ItemImageModal = ({itemid}) => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        alert("Submit");
-        //addItemDoc(e)
-        //handleReset();
+        console.log("Submit");
+        updateItemDoc(e);
+        handleClose();
     };
+
+    function updateItemDoc(inputs) {
+
+    }
 
     useEffect(() => {
         setItemFromID();

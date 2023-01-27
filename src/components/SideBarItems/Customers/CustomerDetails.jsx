@@ -13,7 +13,7 @@ import Topbar from "../../NAVBars/TopBar";
 import Sidebar from "../../NAVBars/SideBar";
 import Header from "../../Header/Header";
 //import ItemDetailsSizeList from './ItemDetailsSizeList';
-//import ItemDetailsForm from './ItemDetailsForm';
+import CustomerDetailsForm from './CustomerDetailsForm';
 
 const CustomerDetails = () => {
     const [theme, colorMode] = useMode();
@@ -22,9 +22,9 @@ const CustomerDetails = () => {
     const { customerid } = useParams();
     const [customer, setCustomer] = useState({});
   
-    const setItemFromURL = async (firebaseCustId) => {
+    const setCustomerFromURL = async () => {
       try {
-        const customerRef = doc(db, "customer-profile", firebaseCustId);
+        const customerRef = doc(db, "customer-profile", customerid);
         const customerSnap = await getDoc(customerRef);
         if (customerSnap.exists()) {
           setCustomer(customerSnap.data());
@@ -35,12 +35,37 @@ const CustomerDetails = () => {
     };
   
     useEffect(() => {
-      setItemFromURL(customerid);
+      setCustomerFromURL();
     }, []);
 
     return (
-        <div>CustomerDetails</div>
-    )
+      <ColorModeContext.Provider value={colorMode}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+            <div className="app">
+              <Sidebar />
+              <main className="content">
+                <Topbar />
+                  <Box m="20px">
+                      {/* HEADER */}
+                    <Box display="flex" justifyContent="space-between" alignItems="center">
+                      <Header title={customer.CustomerName} subtitle='' />
+                    </Box>
+                    <CustomerDetailsForm customer={customer} customerid={customerid}/>
+                  </Box>
+                    
+                  <div className='w-100 text-center mt-2'>
+                    {/*
+                      ADD Customer Square Account Credit Cards
+                      ADD Customer Shipping Codes
+                      <ItemDetailsSizeList itemid={itemid}/> 
+                    */}
+                  </div>
+              </main>
+            </div>
+        </ThemeProvider>
+      </ColorModeContext.Provider>
+  )
 }
 
 export default CustomerDetails

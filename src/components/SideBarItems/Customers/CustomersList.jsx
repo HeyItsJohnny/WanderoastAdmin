@@ -64,8 +64,8 @@ const CustomersList = () => {
     }, []);
 
     const handleRowClick = (params) => {
-        alert(params.row.id);
-        //navigate("/customerdetails/" + params.row.id);
+        //alert(params.row.id);
+        navigate("/customerdetails/" + params.row.id);
     };
 
     return (
