@@ -12,7 +12,7 @@ import { Box, CssBaseline, ThemeProvider } from '@mui/material';
 import Topbar from "../../NAVBars/TopBar";
 import Sidebar from "../../NAVBars/SideBar";
 import Header from "../../Header/Header";
-//import ItemDetailsSizeList from './ItemDetailsSizeList';
+import CustomerShipCodeList from './CustomerShipCodeList';
 import CustomerDetailsForm from './CustomerDetailsForm';
 
 const CustomerDetails = () => {
@@ -55,10 +55,11 @@ const CustomerDetails = () => {
                   </Box>
                     
                   <div className='w-100 text-center mt-2'>
+                    <CustomerShipCodeList customerid={customerid}/> 
                     {/*
                       ADD Customer Square Account Credit Cards
                       ADD Customer Shipping Codes
-                      <ItemDetailsSizeList itemid={itemid}/> 
+                      <CustomerShipCodeList customerid={customerid}/> 
                     */}
                   </div>
               </main>

@@ -53,7 +53,6 @@ const ItemDetails = () => {
                     </Box>
                     <ItemDetailsForm item={item} itemid={itemid}/>
                 </Box>
-                  
                 <div className='w-100 text-center mt-2'>
                   <ItemDetailsSizeList itemid={itemid}/>
                 </div>
