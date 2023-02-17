@@ -28,6 +28,7 @@ const Dashboard = () => {
 
   const [theme, colorMode] = useMode();
   const colors = tokens(theme.palette.mode);
+  var selectedOrders = [];
 
   const [smallBrazilBagData, setSmallBrazilBagData] = useState(0);
   const [largeBrazilBagData, setLargeBrazilBagData] = useState(0);
@@ -233,6 +234,10 @@ const Dashboard = () => {
   function changeOrderStatus() {
     alert("CHANGE Order Status.");
   }
+
+  const selectedOrdersForStatusChange = (data) => {
+    selectedOrders = data.selectedRowsData;
+  };
 
   return (
     <>
@@ -493,7 +498,7 @@ const Dashboard = () => {
                     </Box>
                   </Box>
                   <div className='w-100 text-center mt-2'>
-                    <NewOrders />
+                    <NewOrders selectedOrdersForStatusChange={selectedOrdersForStatusChange}/>
                   </div>
               </main>
             </div>
