@@ -4,7 +4,7 @@ import { collection, query, onSnapshot } from 'firebase/firestore';
 import { tokens } from "../../../theme";
 import { Box, useTheme, Button } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import { getDoc, doc, deleteDoc } from 'firebase/firestore';
+import { getDoc, doc, deleteDoc, updateDoc } from 'firebase/firestore';
 import Header from "../../Header/Header";
 
 import CustomerShipCodeModal from '../../Modals/CustomerShipCodeModal';
@@ -84,13 +84,30 @@ const CustomerShipCodeList = ({customerid}) => {
     }
 
     function setDefaultShipping() {
-        for (var key in selectedCustShipCode) {
-            //deleteCustShipCode(selectedCustShipCode[key].id)
+        if (selectedCustShipCode.length !== 1) {
+            alert('Please select one shipping code to set as default.');
+        } else {
+            for (var key in selectedCustShipCode) {
+                setShipToCodeForCustomer(selectedCustShipCode[key].address1,selectedCustShipCode[key].address2,selectedCustShipCode[key].city,selectedCustShipCode[key].state,selectedCustShipCode[key].zipcode)
+            }
         }
+        
     }
 
     async function deleteCustShipCode(custShipCodeID) {
         await deleteDoc(doc(db,"customer-profile",customerid,"shippingcodes",custShipCodeID));
+    }
+
+    async function setShipToCodeForCustomer(A1,A2,City,State,Zip) {
+        const custRef = doc(db, "customer-profile", customerid);
+        await updateDoc(custRef, {
+            ShippingAddress1: A1,
+            ShippingAddress2: A2 ?? "",
+            ShippingCity: City,
+            ShippingState: State,
+            ShippingZipCode: Zip
+        });
+        window.location.reload(false);
     }
 
     useEffect(() => {
