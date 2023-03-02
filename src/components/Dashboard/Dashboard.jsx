@@ -232,7 +232,10 @@ const Dashboard = () => {
   }
 
   function changeOrderStatus() {
-    alert("CHANGE Order Status.");
+    //alert("CHANGE Order Status.");
+    for (var key in selectedOrders) {
+      console.log(selectedOrders[key].FullName);
+    }
   }
 
   const selectedOrdersForStatusChange = (data) => {
@@ -504,7 +507,6 @@ const Dashboard = () => {
             </div>
         </ThemeProvider>
       </ColorModeContext.Provider>
-      
     </>
   )
 }

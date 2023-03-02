@@ -6,7 +6,7 @@ import { db } from "../../Firebase/firebase";
 import { collection, getDocs, where, query } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 
-const NewOrders = (selectedOrdersForStatusChange) => {
+const NewOrders = ({selectedOrdersForStatusChange}) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
