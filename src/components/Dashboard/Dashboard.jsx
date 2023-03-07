@@ -12,7 +12,7 @@ import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
 
 //Firebase
 import { db } from '../../Firebase/firebase';
-import { collection, getDocs, where, query } from 'firebase/firestore';
+import { collection, getDocs, where, query, updateDoc, doc } from 'firebase/firestore';
 
 //Components
 import Topbar from "../NAVBars/TopBar";
@@ -233,9 +233,20 @@ const Dashboard = () => {
 
   function changeOrderStatus() {
     //alert("CHANGE Order Status.");
-    for (var key in selectedOrders) {
-      console.log(selectedOrders[key].FullName);
+    if (selectedOrders.length === 0) {
+      alert("Nothing was selected.");
+    } else {
+      for (var key in selectedOrders) {
+        console.log(selectedOrders[key].FullName);
+      }
     }
+  }
+
+  async function updateOrderStatus(orderID, newStatus) {
+    const orderRef = doc(db, "orders", orderID);
+      await updateDoc(orderRef, {
+        Status: newStatus,
+      });
   }
 
   const selectedOrdersForStatusChange = (data) => {
