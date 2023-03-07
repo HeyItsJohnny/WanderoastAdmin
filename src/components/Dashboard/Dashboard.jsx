@@ -109,7 +109,6 @@ const Dashboard = () => {
   async function populateCalculations() {
     clearCalculationsForPopulate();
     try {
-
       const ordersCollection = query(collection(db,'orders'),where("Status","==","Order Created"))
       const ordersSnapshot = await getDocs(ordersCollection);
       const ordersList = ordersSnapshot.docs.map((doc) => ({
@@ -131,6 +130,7 @@ const Dashboard = () => {
 
     const orderLinesList = orderLinesSnapshot.docs.map((doc) => ({
         id: doc.id,
+        ItemName: doc.data().ItemName,
         BagSize: doc.data().BagSize,
         Quantity: doc.data().Quantity,
         ItemId: doc.data().ItemId
@@ -138,45 +138,45 @@ const Dashboard = () => {
 
 
     for (var key in orderLinesList) {
-      var ItemID = orderLinesList[key].ItemId * 1;
+      var ItemName = orderLinesList[key].ItemName;
 
-      if (ItemID === 0) {
+      if (ItemName === 'DECAF - BRAZIL FAZHENDA RAINA') {
         if (orderLinesList[key].BagSize === "340G") {
           DecafSmallBag +=  orderLinesList[key].Quantity;
         } else if (orderLinesList[key].BagSize === "1000G") {
           DecafBigBag +=  orderLinesList[key].Quantity;
         }
-      } else if (ItemID === 1) {
+      } else if (ItemName === 'BRAZIL FAZHENDA RAINA') {
         if (orderLinesList[key].BagSize === "340G") {
           BrazilSmallBag +=  orderLinesList[key].Quantity;
         } else if (orderLinesList[key].BagSize === "1000G") {
           BrazilBigBag +=  orderLinesList[key].Quantity;
         }
-      } else if (ItemID === 2) {
+      } else if (ItemName === 'SOUTH CENTRAL') {
         if (orderLinesList[key].BagSize === "340G") {
           SouthCentralSmallBag +=  orderLinesList[key].Quantity;
         } else if (orderLinesList[key].BagSize === "1000G") {
           SouthCentralBigBag +=  orderLinesList[key].Quantity;
         }
-      } else if (ItemID === 3) {
+      } else if (ItemName === 'COSTA RICA DOTA TARRAZU EL VAPOR GRAIN PRO') {
         if (orderLinesList[key].BagSize === "340G") {
           CostaRicaSmallBag +=  orderLinesList[key].Quantity;
         } else if (orderLinesList[key].BagSize === "1000G") {
           CostaRicaBigBag +=  orderLinesList[key].Quantity;
         }
-      } else if (ItemID === 4) {
+      } else if (ItemName === 'COLOMBIA') {
         if (orderLinesList[key].BagSize === "340G") {
           ColumbiaSmallBag +=  orderLinesList[key].Quantity;
         } else if (orderLinesList[key].BagSize === "1000G") {
           ColumbiaBigBag +=  orderLinesList[key].Quantity;
         }
-      } else if (ItemID === 5) {
+      } else if (ItemName === 'ETHIOPIA YIRGACHEFFE 1 FTO DUMERSO') {
         if (orderLinesList[key].BagSize === "340G") {
           EthopiaSmallBag +=  orderLinesList[key].Quantity;
         } else if (orderLinesList[key].BagSize === "1000G") {
           EthopiaBigBag +=  orderLinesList[key].Quantity;
         }
-      } else if (ItemID === 7) {
+      } else if (ItemName === 'NICARAGUA JAVA') {
         if (orderLinesList[key].BagSize === "340G") {
           JavaSmallBag += orderLinesList[key].Quantity;
         } else if (orderLinesList[key].BagSize === "1000G") {
@@ -344,6 +344,7 @@ const Dashboard = () => {
                           title="Brazil"
                           small={smallBrazilBagData}
                           large={largeBrazilBagData}
+                          total={brazilTotalData}
                           icon={
                             <EmailIcon
                               sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -363,6 +364,7 @@ const Dashboard = () => {
                           title="Costa Rica"
                           small={smallCostaRicaBagData}
                           large={largeCostaRicaBagData}
+                          total={costaRicaTotalData}
                           icon={
                             <EmailIcon
                               sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -382,6 +384,7 @@ const Dashboard = () => {
                           title="Columbia"
                           small={smallColumbiaBagData}
                           large={largeColumbiaBagData}
+                          total={columbiaTotalData}
                           icon={
                             <EmailIcon
                               sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -401,6 +404,7 @@ const Dashboard = () => {
                           title="Ethopia"
                           small={smallEthopiaBagData}
                           large={largeEthopiaBagData}
+                          total={ethopiaTotalData}
                           icon={
                             <EmailIcon
                               sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -428,6 +432,7 @@ const Dashboard = () => {
                           title="South Central"
                           small={smallSouthCentralBagData}
                           large={largeSouthCentralBagData}
+                          total={southCentralTotalData}
                           icon={
                             <EmailIcon
                               sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -447,6 +452,7 @@ const Dashboard = () => {
                           title="Java"
                           small={smallJavaBagData}
                           large={largeJavaBagData}
+                          total={javaTotalData}
                           icon={
                             <EmailIcon
                               sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -466,6 +472,7 @@ const Dashboard = () => {
                           title="Decaf"
                           small={smallDecafBagData}
                           large={largeDecafBagData}
+                          total={decafTotalData}
                           icon={
                             <EmailIcon
                               sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
@@ -473,6 +480,7 @@ const Dashboard = () => {
                           }
                         />
                       </Box>
+                      {/*
                       <Box
                         gridColumn="span 3"
                         mt="25px"
@@ -498,6 +506,7 @@ const Dashboard = () => {
                           }
                         />
                       </Box>
+                        */}
                     </Box>
                   </Box>
                   <div className='w-100 text-center mt-2'>

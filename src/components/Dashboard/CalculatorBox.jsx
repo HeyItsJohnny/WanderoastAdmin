@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Box, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 
-const CalculatorBox = ({ title, small, large }) => {
+const CalculatorBox = ({ title, small, large, total }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -27,6 +27,11 @@ const CalculatorBox = ({ title, small, large }) => {
       <Box display="flex" justifyContent="space-between" mt="2px">
         <Typography variant="h6" sx={{ color: colors.greenAccent[500] }}>
           Large Bag: {large}
+        </Typography>
+      </Box>
+      <Box display="flex" justifyContent="space-between" mt="2px">
+        <Typography variant="h6" sx={{ color: colors.greenAccent[500] }}>
+          Total (g): {total}
         </Typography>
       </Box>
     </Box>

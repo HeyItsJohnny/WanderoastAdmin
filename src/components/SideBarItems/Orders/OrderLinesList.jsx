@@ -24,7 +24,8 @@ const OrderLinesList = ({orderid}) => {
                 BagSize: doc.data().BagSize,
                 Quantity: doc.data().Quantity,
                 LineAmount: doc.data().LineAmount,
-                UnitPrice: doc.data().UnitPrice
+                UnitPrice: doc.data().UnitPrice,
+                ItemId: doc.data().ItemId
             }
             orderLineList.push(orderLineData);
           });
@@ -46,6 +47,11 @@ const OrderLinesList = ({orderid}) => {
         {
             field: "Quantity", 
             headerName: "Quantity", 
+            flex: 1
+        },
+        {
+            field: "ItemId", 
+            headerName: "Item ID", 
             flex: 1
         },
         {
