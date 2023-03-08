@@ -18,6 +18,7 @@ import { collection, getDocs, where, query, updateDoc, doc } from 'firebase/fire
 import Topbar from "../NAVBars/TopBar";
 import Sidebar from "../NAVBars/SideBar";
 import NewOrders from './NewOrders';
+import OrderStatusChange from '../Modals/OrderStatusChange';
 
 //Light/Dark Mode
 import { ColorModeContext, useMode } from '../../theme';
@@ -231,14 +232,15 @@ const Dashboard = () => {
     setDecafTotalData(((smallDecafBagData*340) + (largeDecafBagData * 1000)) * 1);
   }
 
-  function changeOrderStatus() {
-    //alert("CHANGE Order Status.");
+  function changeOrderStatus(newOrderStatus) {
+    console.log("New Status: " + newOrderStatus);
     if (selectedOrders.length === 0) {
       alert("Nothing was selected.");
     } else {
       for (var key in selectedOrders) {
-        console.log(selectedOrders[key].FullName);
+        console.log('Orders to Change: ' + selectedOrders[key].FullName);
       }
+      //window.location.reload();
     }
   }
 
@@ -252,6 +254,10 @@ const Dashboard = () => {
   const selectedOrdersForStatusChange = (data) => {
     selectedOrders = data.selectedRowsData;
   };
+
+  const selectedNewOrderStatus = (data) => {
+    changeOrderStatus(data.orderStatus);
+  }
 
   return (
     <>
@@ -267,22 +273,7 @@ const Dashboard = () => {
                     <Box display="flex" justifyContent="space-between" alignItems="center">
                       <Header title="DASHBOARD" subtitle="A snowflake is one of God's most fragile creations, but look what they can do when they stick together." />
                       <Box>
-                        <Button
-                          sx={{
-                            backgroundColor: colors.blueAccent[700],
-                            color: colors.grey[100],
-                            fontSize: "14px",
-                            fontWeight: "bold",
-                            padding: "10px 20px",
-                          }}
-                          onClick={() => {
-                            changeOrderStatus();
-                          }
-                        }
-                        >
-                          <ChangeCircleIcon sx={{ mr: "10px" }} />
-                          Change Status
-                        </Button>
+                        <OrderStatusChange selectedNewOrderStatus={selectedNewOrderStatus} />
                       </Box>
                     </Box>
                     <Box>
