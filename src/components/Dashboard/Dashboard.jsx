@@ -239,6 +239,7 @@ const Dashboard = () => {
     } else {
       for (var key in selectedOrders) {
         console.log('Orders to Change: ' + selectedOrders[key].FullName);
+        updateOrderStatus(selectedOrders[key].id,newOrderStatus);
       }
       //window.location.reload();
     }

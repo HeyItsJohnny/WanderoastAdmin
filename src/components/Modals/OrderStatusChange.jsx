@@ -104,7 +104,7 @@ const OrderStatusChange = ({ selectedNewOrderStatus }) => {
               }}
               type="submit"
             >
-              Add Item Size
+              Submit
             </Button>
           </DialogActions>
         </form>
