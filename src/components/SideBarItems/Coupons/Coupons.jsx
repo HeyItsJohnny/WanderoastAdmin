@@ -28,9 +28,7 @@ const Coupons = () => {
   var selectedCoupons = [];
 
   const couponsToRemove = (data) => {
-    console.log("HIT.");
     selectedCoupons = data.selectedRowsData;
-    console.log(selectedCoupons);
 }
 
   function removeCoupon() {

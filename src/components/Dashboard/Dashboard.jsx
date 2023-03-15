@@ -241,8 +241,8 @@ const Dashboard = () => {
         console.log('Orders to Change: ' + selectedOrders[key].FullName);
         updateOrderStatus(selectedOrders[key].id,newOrderStatus);
       }
-      //window.location.reload();
     }
+    //window.location.reload();
   }
 
   async function updateOrderStatus(orderID, newStatus) {

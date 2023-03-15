@@ -57,7 +57,6 @@ const CouponsList = ({couponsToRemove}) => {
         fetchCouponData();
     }, []);
 
-
     const onRowsSelectionHandler = (ids) => {
         const selectedRowsData = ids.map((id) => coupons.find((row) => row.id === id));
         couponsToRemove({selectedRowsData});

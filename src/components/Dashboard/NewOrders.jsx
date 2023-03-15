@@ -3,7 +3,7 @@ import { Box, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import { db } from "../../Firebase/firebase";
-import { collection, getDocs, where, query } from "firebase/firestore";
+import { collection, getDocs, where, query, onSnapshot } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 
 const NewOrders = ({selectedOrdersForStatusChange}) => {
@@ -18,36 +18,23 @@ const NewOrders = ({selectedOrdersForStatusChange}) => {
       collection(db, "orders"),
       where("Status", "==", "Order Created")
     );
-    const ordersSnapshot = await getDocs(ordersCollection);
-    const ordersList = ordersSnapshot.docs.map((doc) => ({
-      id: doc.id,
-      FullName: doc.data().FullName,
-      CustomerNotes: doc.data().CustomerNotes,
-      InternalComments: doc.data().InternalComments,
-      Status: doc.data().Status,
-      OrderType: doc.data().OrderType,
-      /*
-          OrderLines: {
-            OrderLines: fetchOrderLineData(doc.id)
-            Name: doc.data().FullName,
-            Notes: doc.data().CustomerNotes
+
+    onSnapshot(ordersCollection, (querySnapshot) => {
+      const ordersList = [];
+      querySnapshot.forEach((doc) => {
+          var orderData = {
+            id: doc.id,
+            FullName: doc.data().FullName,
+            CustomerNotes: doc.data().CustomerNotes,
+            InternalComments: doc.data().InternalComments,
+            Status: doc.data().Status,
+            OrderType: doc.data().OrderType,
           }
-          */
-    }));
-
-    setOrders(ordersList);
+          ordersList.push(orderData);
+      });
+      setOrders(ordersList);
+    });
   };
-
-  /*
-    const fetchOrderLineData = async (orderID) => {
-        const orderLinesCollection = collection(db,'orders',orderID,"orderlines")
-        const orderLinesSnapshot = await getDocs(orderLinesCollection);
-        const orderLinesList = orderLinesSnapshot.docs.map((doc) => ({
-            data: doc.data()
-        }));
-        return orderLinesList;
-    }
-    */
 
   const columns = [
     {
@@ -67,20 +54,6 @@ const NewOrders = ({selectedOrdersForStatusChange}) => {
       flex: 1,
       width: 90,
     },
-    /*
-        {
-            field: "OrderLines", 
-            headerName: "Items", 
-            flex: 1,
-            width: 90,
-            renderCell: (params) => (
-                <div>
-                  <p>{params.value.OrderLines.OrderLines.ItemName}</p>
-                  <p color="textSecondary">{params.value.OrderLines.OrderLines.ItemName}</p>
-                </div>
-              )
-        },
-        */
     {
       field: "CustomerNotes",
       headerName: "Customer Notes",
