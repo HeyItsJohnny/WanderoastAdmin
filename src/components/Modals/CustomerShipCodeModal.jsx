@@ -61,7 +61,7 @@ const CustomerShipCodeModal = ({customerid}) => {
             }
         >
             <AddCircleIcon sx={{ mr: "10px" }} />
-            Add New Size
+            Add New Address
         </Button>
         <Dialog open={show} onClose={handleClose}>
             <form onSubmit={handleSubmit}>

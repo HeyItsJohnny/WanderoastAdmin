@@ -1,23 +1,130 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { Box, useTheme, Button, IconButton } from "@mui/material";
+import { DataGrid } from "@mui/x-data-grid";
+import { useMode, tokens } from "../../../theme";
+import { db } from "../../../Firebase/firebase";
 import {
-  Box,
-  CssBaseline,
-  ThemeProvider,
-  Button,
-  Stepper,
-  Typography,
-  Step,
-  StepLabel,
-  Paper,
-} from "@mui/material";
-import { ColorModeContext, useMode, tokens } from "../../../theme";
+  collection,
+  query,
+  onSnapshot,
+  orderBy,
+  where,
+} from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
+import SearchIcon from "@mui/icons-material/Search";
+import InputBase from "@mui/material/InputBase";
 
 const SelectCustomer = ({ nextStep }) => {
   const [theme, colorMode] = useMode();
   const colors = tokens(theme.palette.mode);
+
+  const [customers, setCustomers] = useState([]);
+
+  const fetchCustomerData = async () => {
+    const customersCollection = query(
+      collection(db, "customer-profile"),
+      orderBy("CustomerName")
+    );
+    onSnapshot(customersCollection, (querySnapshot) => {
+      const customersList = [];
+      querySnapshot.forEach((doc) => {
+        var hasSquareAccount = true;
+        if (doc.data().squareID === "") {
+          hasSquareAccount = false;
+        }
+        var customerData = {
+          id: doc.id,
+          CustomerName: doc.data().CustomerName,
+          Email: doc.data().Email,
+          PhoneNo: doc.data().PhoneNo,
+          HasSquareAccount: hasSquareAccount,
+        };
+        customersList.push(customerData);
+      });
+      setCustomers(customersList);
+    });
+  };
+
+  const columns = [
+    {
+      field: "CustomerName",
+      headerName: "Name",
+      flex: 1,
+    },
+  ];
+
+  function searchCustomerArray(searchTerm) {
+    const results = [];
+
+    customers.forEach((obj) => {
+      for (let key in obj) {
+        if (
+          typeof obj[key] === "string" &&
+          obj[key].toLowerCase().includes(searchTerm.toLowerCase())
+        ) {
+          results.push(obj);
+          break;
+        }
+      }
+    });
+
+    setCustomers(results);
+  }
+
+  const handleSearchChange = (event) => {
+    if (event.target.value === "") {
+      fetchCustomerData();
+    } else {
+      searchCustomerArray(event.target.value);
+    }
+  };
+
+  useEffect(() => {
+    fetchCustomerData();
+  }, []);
+
   return (
     <>
-    <h1>SELECT Customer</h1>
+      <Box
+        m="20px 0 0 0"
+        height="50vh"
+        sx={{
+          "& .MuiDataGrid-root": {
+            border: "none",
+          },
+          "& .MuiDataGrid-cell": {
+            borderBottom: "none",
+          },
+          "& .name-column--cell": {
+            color: colors.greenAccent[300],
+          },
+          "& .MuiDataGrid-columnHeaders": {
+            backgroundColor: colors.blueAccent[700],
+            borderBottom: "none",
+          },
+          "& .MuiDataGrid-virtualScroller": {
+            backgroundColor: colors.primary[400],
+          },
+          "& .MuiDataGrid-footerContainer": {
+            borderTop: "none",
+            backgroundColor: colors.blueAccent[700],
+          },
+          "& .MuiCheckbox-root": {
+            color: `${colors.greenAccent[200]} !important`,
+          },
+        }}
+      >
+        <InputBase
+          sx={{ ml: 2, flex: 1 }}
+          placeholder="Search Name"
+          onChange={handleSearchChange}
+        />
+        <IconButton type="button" sx={{ p: 1 }}>
+          <SearchIcon />
+        </IconButton>
+        <DataGrid rows={customers} columns={columns} pageSize={50} />
+      </Box>
+
       <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
         <Box sx={{ flex: "1 1 auto" }} />
         <Button

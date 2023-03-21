@@ -216,7 +216,8 @@ const CustomerDetailsForm = ({customer, customerid}) => {
                 <TextField
                     InputLabelProps={{ shrink: true }}
                     margin="dense"
-                    id="Shipping"
+                    required
+                    id="ShippingZipCode"
                     label="Ship to Zip Code"
                     type="text"
                     fullWidth
