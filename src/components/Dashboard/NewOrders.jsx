@@ -3,7 +3,7 @@ import { Box, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import { db } from "../../Firebase/firebase";
-import { collection, getDocs, where, query, onSnapshot } from "firebase/firestore";
+import { collection, getDocs, where, query, onSnapshot, orderBy } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 
 const NewOrders = ({selectedOrdersForStatusChange}) => {
@@ -16,7 +16,8 @@ const NewOrders = ({selectedOrdersForStatusChange}) => {
   const fetchOrdersData = async () => {
     const ordersCollection = query(
       collection(db, "orders"),
-      where("Status", "==", "Order Created")
+      where("Status", "==", "Order Created"),
+      orderBy("OrderDate")
     );
 
     onSnapshot(ordersCollection, (querySnapshot) => {
