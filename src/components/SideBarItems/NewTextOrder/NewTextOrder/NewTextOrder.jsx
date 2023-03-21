@@ -43,6 +43,11 @@ const NewTextOrder = () => {
   const colors = tokens(theme.palette.mode);
   const classes = useStyles();
 
+  //Data
+  const [customerID, setCustomerID] = useState("");
+  const [shippingData, setShippingData] = useState({});
+  const [orderData, setOrderData] = useState({});
+
   //Steps -
   const [activeStep, setActiveStep] = useState(0);
 
@@ -50,21 +55,28 @@ const NewTextOrder = () => {
   const backStep = () => setActiveStep((prevActiveStep) => prevActiveStep - 1);
   //Steps +
 
-  //Data
-  const [customerData, setCustomerData] = useState({});
-  const [shippingData, setShippingData] = useState({});
-  const [orderData, setOrderData] = useState({});
+  //Set Customer ID -
+  const setCustomerAndContinue = (data) => {
+    setCustomerID(data);
+    nextStep();
+  }
+  //Set Customer ID +
+
+  //Set Address -
+  const setAddressAndContinue = (data) => {
+    setShippingData(data);
+    nextStep();
+  }
+  //Set Address +
 
   function getStepContent() {
     switch (activeStep) {
       case 0:
-        return <SelectCustomer nextStep={nextStep} />;
+        return <SelectCustomer setCustomerAndContinue={setCustomerAndContinue} />;
       case 1:
-        return <ShippingAddress nextStep={nextStep} backStep={backStep} />;
+        return <ShippingAddress setAddressAndContinue={setAddressAndContinue} backStep={backStep} customerID={customerID} />;
       case 2:
-        return (
-          <TextOrderShoppingCart nextStep={nextStep} backStep={backStep} />
-        );
+        return <TextOrderShoppingCart nextStep={nextStep} backStep={backStep} shippingData={shippingData} />;
       case 3:
         return <Review nextStep={nextStep} backStep={backStep} />;
       case 4:

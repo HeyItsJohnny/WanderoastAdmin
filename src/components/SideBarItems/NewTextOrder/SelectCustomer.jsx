@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, useTheme, Button, IconButton } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useMode, tokens } from "../../../theme";
 import { db } from "../../../Firebase/firebase";
@@ -8,14 +8,12 @@ import {
   query,
   onSnapshot,
   orderBy,
-  where,
 } from "firebase/firestore";
-import { useNavigate } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
 
-const SelectCustomer = ({ nextStep }) => {
-  const [theme, colorMode] = useMode();
+const SelectCustomer = ({ setCustomerAndContinue }) => {
+  const [theme] = useMode();
   const colors = tokens(theme.palette.mode);
 
   const [customers, setCustomers] = useState([]);
@@ -79,6 +77,12 @@ const SelectCustomer = ({ nextStep }) => {
     }
   };
 
+  const handleRowClick = (params) => {
+    setCustomerAndContinue(params.row.id);
+    //alert(params.row.CustomerName);
+    //navigate("/itemdetails/" + params.row.id);
+  };
+
   useEffect(() => {
     fetchCustomerData();
   }, []);
@@ -122,23 +126,12 @@ const SelectCustomer = ({ nextStep }) => {
         <IconButton type="button" sx={{ p: 1 }}>
           <SearchIcon />
         </IconButton>
-        <DataGrid rows={customers} columns={columns} pageSize={50} />
-      </Box>
-
-      <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-        <Box sx={{ flex: "1 1 auto" }} />
-        <Button
-          sx={{
-            backgroundColor: colors.grey[700],
-            color: colors.grey[100],
-            fontSize: "14px",
-            fontWeight: "bold",
-            padding: "10px 20px",
-          }}
-          onClick={nextStep}
-        >
-          Next
-        </Button>
+        <DataGrid 
+          rows={customers} 
+          columns={columns} 
+          pageSize={50}
+          onRowClick={handleRowClick}
+        />
       </Box>
     </>
   );

@@ -9,14 +9,33 @@ import {
   Step,
   StepLabel,
   Paper,
+  ListItem, 
+  ListItemText,
+  List
 } from "@mui/material";
 import { ColorModeContext, useMode, tokens } from "../../../theme";
 
-const TextOrderShoppingCart = ({ nextStep, backStep }) => {
+const TextOrderShoppingCart = ({ nextStep, backStep, shippingData }) => {
   const [theme, colorMode] = useMode();
   const colors = tokens(theme.palette.mode);
   return (
     <>
+    <List disablePadding>
+    <ListItem style={{ padding: '10px 0' }}>
+      <ListItemText primary="Shipping Info:" secondary={
+        <div>
+          <div>{shippingData.ShippingName}</div>
+          <div>{shippingData.ShippingAddress1}</div>
+          <div>{shippingData.ShippingAddress2}</div>
+          <div>{shippingData.ShippingCity}, {shippingData.ShippingState} {shippingData.ShippingZipCode}</div>
+          <br></br>
+          <div>{shippingData.Email}</div>
+          <div>{shippingData.PhoneNo}</div>
+        </div>
+      }/>
+    </ListItem>
+    </List>
+    
     <h1>SHOPPING CART</h1>
       <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
         <Button
