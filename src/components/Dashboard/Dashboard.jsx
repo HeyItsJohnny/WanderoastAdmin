@@ -242,7 +242,6 @@ const Dashboard = () => {
         updateOrderStatus(selectedOrders[key].id,newOrderStatus);
       }
     }
-    //window.location.reload();
   }
 
   async function updateOrderStatus(orderID, newStatus) {

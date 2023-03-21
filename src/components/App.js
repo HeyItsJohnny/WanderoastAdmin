@@ -9,7 +9,7 @@ import AdminUsers from "./SideBarItems/AdminUsers/AdminUsers";
 import Coupons from "./SideBarItems/Coupons/Coupons";
 import Customers from "./SideBarItems/Customers/Customers";
 import Items from "./SideBarItems/Items/Items";
-import NewTextOrder from "./SideBarItems/NewTextOrder/NewTextOrder";
+import NewTextOrder from "./SideBarItems/NewTextOrder/NewTextOrder/NewTextOrder";
 import Orders from "./SideBarItems/Orders/Orders";
 import Subscriptions from "./SideBarItems/Subscriptions/Subscriptions";
 import ItemDetails from "./SideBarItems/Items/ItemDetails";
