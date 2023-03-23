@@ -13,12 +13,12 @@ import {
   ListItemText,
   List,
 } from "@mui/material";
-import { ColorModeContext, useMode, tokens } from "../../../theme";
-import { collection, query, onSnapshot } from "firebase/firestore";
+import { ColorModeContext, useMode, tokens } from "../../../../theme";
+import { collection, query, onSnapshot, orderBy } from "firebase/firestore";
 import TextOrderShoppingCartItem from "./TextOrderShoppingCartItem";
 
 //Firebase
-import { db } from "../../../Firebase/firebase";
+import { db } from "../../../../Firebase/firebase";
 
 const TextOrderShoppingCart = ({ nextStep, backStep, shippingData }) => {
   const [theme, colorMode] = useMode();
@@ -28,7 +28,7 @@ const TextOrderShoppingCart = ({ nextStep, backStep, shippingData }) => {
   const [itemSize, setItemSizes] = useState([]);
 
   const fetchItemData = async () => {
-    const itemsCollection = query(collection(db, "items"));
+    const itemsCollection = query(collection(db, "items"), orderBy("Name"));
     onSnapshot(itemsCollection, (querySnapshot) => {
       const itemsList = [];
       querySnapshot.forEach((doc) => {
@@ -36,7 +36,7 @@ const TextOrderShoppingCart = ({ nextStep, backStep, shippingData }) => {
           id: doc.id,
           ItemID: doc.data().ItemShoppingCartID,
           Name: doc.data().Name,
-          ItemType: doc.data().ItemType
+          ItemType: doc.data().ItemType,
         };
         itemsList.push(itemData);
       });
@@ -48,12 +48,17 @@ const TextOrderShoppingCart = ({ nextStep, backStep, shippingData }) => {
   const setItemSizeData = (itemsList) => {
     console.log("Start.");
     for (var key in itemsList) {
-      fetchItemSizeData(itemsList[key].Name,itemsList[key].id,itemsList[key].ItemID,itemsList[key].ItemType);
+      fetchItemSizeData(
+        itemsList[key].Name,
+        itemsList[key].id,
+        itemsList[key].ItemID,
+        itemsList[key].ItemType
+      );
       //console.log("NAME: " + items[key].Name + " ID: " + items[key].id);
     }
-  }
+  };
 
-  const fetchItemSizeData = async (itemname,itemid,itemscid,itemtype) => {
+  const fetchItemSizeData = async (itemname, itemid, itemscid, itemtype) => {
     //console.log("2. NAME: " + itemname+ " ID: " + itemid);
     const itemSizeCollection = query(collection(db, "items", itemid, "sizes"));
     onSnapshot(itemSizeCollection, (querySnapshot) => {
@@ -79,12 +84,12 @@ const TextOrderShoppingCart = ({ nextStep, backStep, shippingData }) => {
   }, []);
 
   function currencyFormat(num) {
-    return '$' + num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+    return "$" + num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
   }
 
   return (
     <>
-    {/*
+      {/*
       <List disablePadding>
         <ListItem style={{ padding: "10px 0" }}>
           <ListItemText
@@ -107,6 +112,34 @@ const TextOrderShoppingCart = ({ nextStep, backStep, shippingData }) => {
         </ListItem>
       </List>
     */}
+    <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+    <Button
+        sx={{
+          backgroundColor: colors.grey[700],
+          color: colors.grey[100],
+          fontSize: "14px",
+          fontWeight: "bold",
+          padding: "10px 20px",
+        }}
+        onClick={backStep}
+      >
+        Reset Cart
+      </Button>
+    <Box sx={{ flex: "1 1 auto" }} />
+    <Button
+        sx={{
+          backgroundColor: colors.grey[700],
+          color: colors.grey[100],
+          fontSize: "14px",
+          fontWeight: "bold",
+          padding: "10px 20px",
+        }}
+        onClick={backStep}
+      >
+        Add Item
+      </Button>
+    </Box>
+      
       {items.map((item) => (
         <TextOrderShoppingCartItem item={item} />
       ))}

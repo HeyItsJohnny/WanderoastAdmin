@@ -13,11 +13,11 @@ import {
   ListItemText,
   List,
 } from "@mui/material";
-import { ColorModeContext, useMode, tokens } from "../../../theme";
+import { ColorModeContext, useMode, tokens } from "../../../../theme";
 import { collection, query, onSnapshot } from "firebase/firestore";
 
 //Firebase
-import { db } from "../../../Firebase/firebase";
+import { db } from "../../../../Firebase/firebase";
 
 const TextOrderShoppingCartItem = ({ item }) => {
   const [theme, colorMode] = useMode();

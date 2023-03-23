@@ -20,7 +20,7 @@ import Sidebar from "../../../NAVBars/SideBar";
 import Header from "../../../Header/Header";
 import SelectCustomer from "../SelectCustomer";
 import ShippingAddress from "../ShippingAddress";
-import TextOrderShoppingCart from "../TextOrderShoppingCart";
+import TextOrderShoppingCart from "../TextOrderShoppingCart/TextOrderShoppingCart";
 import Payment from "../Payment";
 import Review from "../Review";
 
