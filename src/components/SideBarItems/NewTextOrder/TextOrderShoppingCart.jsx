@@ -25,25 +25,52 @@ const TextOrderShoppingCart = ({ nextStep, backStep, shippingData }) => {
   const colors = tokens(theme.palette.mode);
 
   const [items, setItems] = useState([]);
+  const [itemSize, setItemSizes] = useState([]);
 
   const fetchItemData = async () => {
     const itemsCollection = query(collection(db, "items"));
     onSnapshot(itemsCollection, (querySnapshot) => {
       const itemsList = [];
       querySnapshot.forEach((doc) => {
-        var hasImage = true;
-        if (doc.data().ImageFilePath === "") {
-          hasImage = false;
-        }
         var itemData = {
           id: doc.id,
+          ItemID: doc.data().ItemShoppingCartID,
           Name: doc.data().Name,
-          ItemType: doc.data().ItemType,
-          HasImage: hasImage,
+          ItemType: doc.data().ItemType
         };
         itemsList.push(itemData);
       });
       setItems(itemsList);
+      setItemSizeData(itemsList);
+    });
+  };
+
+  const setItemSizeData = (itemsList) => {
+    console.log("Start.");
+    for (var key in itemsList) {
+      fetchItemSizeData(itemsList[key].Name,itemsList[key].id,itemsList[key].ItemID,itemsList[key].ItemType);
+      //console.log("NAME: " + items[key].Name + " ID: " + items[key].id);
+    }
+  }
+
+  const fetchItemSizeData = async (itemname,itemid,itemscid,itemtype) => {
+    //console.log("2. NAME: " + itemname+ " ID: " + itemid);
+    const itemSizeCollection = query(collection(db, "items", itemid, "sizes"));
+    onSnapshot(itemSizeCollection, (querySnapshot) => {
+      const itemSizeList = [];
+      querySnapshot.forEach((doc) => {
+        var itemSizeData = {
+          id: doc.id,
+          ItemID: itemid,
+          ItemShoppingCartID: itemscid,
+          ItemName: itemname,
+          ItemType: itemtype,
+          ItemSizeName: doc.data().Name,
+          ItemSizePrice: doc.data().Price,
+        };
+        itemSizeList.push(itemSizeData);
+      });
+      setItemSizes(itemSizeList);
     });
   };
 
@@ -83,42 +110,6 @@ const TextOrderShoppingCart = ({ nextStep, backStep, shippingData }) => {
       {items.map((item) => (
         <TextOrderShoppingCartItem item={item} />
       ))}
-      {/*
-      <ListItem style={{ padding: "10px 0" }}>
-        <Button
-          type="button"
-          size="small"
-          sx={{
-            backgroundColor: colors.redAccent[700],
-            color: colors.grey[100],
-            fontSize: "14px",
-            fontWeight: "bold",
-            padding: "5px 10px",
-          }}
-          onClick={() => {
-            alert("Subtract One");
-          }}
-        >
-          -
-        </Button>
-        <Button
-          type="button"
-          size="small"
-          sx={{
-            backgroundColor: colors.greenAccent[700],
-            color: colors.grey[100],
-            fontSize: "14px",
-            fontWeight: "bold",
-            padding: "5px 10px",
-          }}
-          onClick={() => {
-            alert("Add One");
-          }}
-        >
-          +
-        </Button>
-      </ListItem>
-        */}
       <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
         <Button
           sx={{

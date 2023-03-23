@@ -22,6 +22,7 @@ import { db } from "../../../Firebase/firebase";
 const TextOrderShoppingCartItem = ({ item }) => {
   const [theme, colorMode] = useMode();
   const colors = tokens(theme.palette.mode);
+  
   return (
     <>
       <ListItem style={{ padding: "10px 0" }} key={item.id}>
@@ -29,8 +30,7 @@ const TextOrderShoppingCartItem = ({ item }) => {
           primary={item.Name}
           secondary={
             <div>
-              <div>Size: 340G - Quantity: 1</div>
-              <div>Size: 1000G - Quantity: 1</div>
+              <div>Quantity: 0</div>
             </div>
           }
         />
@@ -51,7 +51,7 @@ const TextOrderShoppingCartItem = ({ item }) => {
             alert("Subtract One");
           }}
         >
-          Subtract 1000G
+          Subtract
         </Button>
         <Button
           type="button"
@@ -67,7 +67,7 @@ const TextOrderShoppingCartItem = ({ item }) => {
             alert("Add One");
           }}
         >
-          Add 1000G
+          Add
         </Button>
       </ListItem>
     </>
