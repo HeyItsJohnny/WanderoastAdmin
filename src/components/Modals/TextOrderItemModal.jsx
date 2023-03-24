@@ -70,6 +70,18 @@ const TextOrderItemModal = () => {
   };
 
   const handleItemSelectionChange = (event) => {
+    console.log("ID: " + event.target.value);
+    setSelectedItem(event.target.value);
+    
+    /*
+    for (var key in items) {
+      if (items[key].id === event.target.value) {
+        setSelectedItem(items[key].Name);
+        console.log("Item: " + selectedItem);
+      }
+    }
+    */
+    
     //setItemSize(event.target.value);
   };
 
@@ -117,11 +129,11 @@ const TextOrderItemModal = () => {
                 onChange={handleItemSelectionChange}
                 required
               >
-                <MenuItem value="340G">BRAZIL</MenuItem>
-                <MenuItem value="1000G">OTHER</MenuItem>
-                <MenuItem value="12 Cans">12 Cans</MenuItem>
-                <MenuItem value="24 Cans">24 Cans</MenuItem>
-                <MenuItem value="1 Box">1 Giftbox</MenuItem>
+                {items.map((item) => (
+                  <MenuItem value={item.id}>
+                    {item.Name}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
           </DialogContent>
