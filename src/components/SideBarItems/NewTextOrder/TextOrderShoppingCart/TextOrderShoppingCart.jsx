@@ -16,6 +16,7 @@ import {
 import { ColorModeContext, useMode, tokens } from "../../../../theme";
 import { collection, query, onSnapshot, orderBy } from "firebase/firestore";
 import TextOrderShoppingCartItem from "./TextOrderShoppingCartItem";
+import TextOrderItemModal from "../../../Modals/TextOrderItemModal";
 
 //Firebase
 import { db } from "../../../../Firebase/firebase";
@@ -41,10 +42,11 @@ const TextOrderShoppingCart = ({ nextStep, backStep, shippingData }) => {
         itemsList.push(itemData);
       });
       setItems(itemsList);
-      setItemSizeData(itemsList);
+      //setItemSizeData(itemsList);
     });
   };
 
+  /*
   const setItemSizeData = (itemsList) => {
     console.log("Start.");
     for (var key in itemsList) {
@@ -78,6 +80,7 @@ const TextOrderShoppingCart = ({ nextStep, backStep, shippingData }) => {
       setItemSizes(itemSizeList);
     });
   };
+  */
 
   useEffect(() => {
     fetchItemData();
@@ -112,34 +115,7 @@ const TextOrderShoppingCart = ({ nextStep, backStep, shippingData }) => {
         </ListItem>
       </List>
     */}
-    <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-    <Button
-        sx={{
-          backgroundColor: colors.grey[700],
-          color: colors.grey[100],
-          fontSize: "14px",
-          fontWeight: "bold",
-          padding: "10px 20px",
-        }}
-        onClick={backStep}
-      >
-        Reset Cart
-      </Button>
-    <Box sx={{ flex: "1 1 auto" }} />
-    <Button
-        sx={{
-          backgroundColor: colors.grey[700],
-          color: colors.grey[100],
-          fontSize: "14px",
-          fontWeight: "bold",
-          padding: "10px 20px",
-        }}
-        onClick={backStep}
-      >
-        Add Item
-      </Button>
-    </Box>
-      
+      <TextOrderItemModal />
       {items.map((item) => (
         <TextOrderShoppingCartItem item={item} />
       ))}
