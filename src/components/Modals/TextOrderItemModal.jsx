@@ -63,8 +63,8 @@ const TextOrderItemModal = () => {
   }, []);
 
   const handleItemSelectionSubmit = (e) => {
-    e.preventDefault();
-
+    //e.preventDefault();
+    console.log("2. SELECTED ITEM: " + selectedItem);
     //addItemSizeDoc(e)
     //handleReset();
   };
@@ -72,7 +72,7 @@ const TextOrderItemModal = () => {
   const handleItemSelectionChange = (event) => {
     console.log("ID: " + event.target.value);
     setSelectedItem(event.target.value);
-    
+    console.log("SELECTED ITEM: " + selectedItem);
     /*
     for (var key in items) {
       if (items[key].id === event.target.value) {
@@ -81,9 +81,12 @@ const TextOrderItemModal = () => {
       }
     }
     */
-    
     //setItemSize(event.target.value);
   };
+
+  const checkItem = () => {
+    console.log("3. SELECTED ITEM: " + selectedItem);
+  }
 
   return (
     <>
@@ -149,6 +152,18 @@ const TextOrderItemModal = () => {
               type="submit"
             >
               Add Item to Shopping Cart
+            </Button>
+            <Button
+              sx={{
+                backgroundColor: colors.greenAccent[700],
+                color: colors.grey[100],
+                fontSize: "14px",
+                fontWeight: "bold",
+                padding: "10px 20px",
+              }}
+              onClick={checkItem}
+            >
+              Check Item
             </Button>
           </DialogActions>
         </form>
