@@ -34,12 +34,18 @@ const TextOrderItemModal = () => {
   const [theme, colorMode] = useMode();
   const colors = tokens(theme.palette.mode);
   const [items, setItems] = useState([]);
+  const [itemSizes, setItemSizes] = useState([]);
 
   const [showItemSelection, setShowItemSelection] = useState(false);
+  const [showItemSizeSelection, setShowItemSizeSelection] = useState(false);
   const [selectedItem, setSelectedItem] = useState("");
+  const [selectedItemSize, setSelectedItemSize] = useState("");
 
   const handleItemSelectionClose = () => setShowItemSelection(false);
   const handleItemSelectionShow = () => setShowItemSelection(true);
+
+  const handleItemSizeSelectionClose = () => setShowItemSizeSelection(false);
+  const handleItemSizeSelectionShow = () => setShowItemSizeSelection(true);
 
   const fetchItemData = async () => {
     const itemsCollection = query(collection(db, "items"), orderBy("Name"));
@@ -58,30 +64,50 @@ const TextOrderItemModal = () => {
     });
   };
 
+  const fetchItemSizeData = async (itemid) => {
+    const itemSizesCollection = query(collection(db, "items",itemid,"sizes"), orderBy("Name"));
+    onSnapshot(itemSizesCollection, (querySnapshot) => {
+      const itemSizeList = [];
+      querySnapshot.forEach((doc) => {
+        var itemSizeData = {
+          id: doc.id,
+          Name: doc.data().Name,
+          Price: doc.data().Price,
+        };
+        itemSizeList.push(itemSizeData);
+      });
+      setItemSizes(itemSizeList);
+      handleItemSelectionClose();
+      handleItemSizeSelectionShow();
+    });
+  };
+
   useEffect(() => {
     fetchItemData();
   }, []);
 
   const handleItemSelectionSubmit = (e) => {
     //e.preventDefault();
-    console.log("2. SELECTED ITEM: " + selectedItem);
-    //addItemSizeDoc(e)
-    //handleReset();
+    //console.log("2. SELECTED ITEM: " + selectedItem);
+    fetchItemSizeData(selectedItem);
+    //selectedItem("");
+  };
+
+  const handleItemSizeSelectionSubmit = (e) => {
+    //e.preventDefault();
+    //console.log("2. SELECTED ITEM: " + selectedItem);
+    //fetchItemSizeData(selectedItem);
+    //selectedItem("");
   };
 
   const handleItemSelectionChange = (event) => {
-    console.log("ID: " + event.target.value);
     setSelectedItem(event.target.value);
-    console.log("SELECTED ITEM: " + selectedItem);
-    /*
-    for (var key in items) {
-      if (items[key].id === event.target.value) {
-        setSelectedItem(items[key].Name);
-        console.log("Item: " + selectedItem);
-      }
-    }
-    */
-    //setItemSize(event.target.value);
+
+  };
+
+  const handleItemSizeSelectionChange = (event) => {
+    setSelectedItem(event.target.value);
+
   };
 
   const checkItem = () => {
@@ -151,8 +177,35 @@ const TextOrderItemModal = () => {
               }}
               type="submit"
             >
-              Add Item to Shopping Cart
+              Choose Size
             </Button>
+          </DialogActions>
+        </form>
+      </Dialog>
+      {/*
+      <Dialog open={showItemSizeSelection} onClose={handleItemSizeSelectionClose}>
+        <form onSubmit={handleItemSizeSelectionSubmit}>
+          <DialogTitle>Choose Size</DialogTitle>
+          <DialogContent>
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">Sizes</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={selectedItemSize}
+                label="Item"
+                onChange={handleItemSizeSelectionChange}
+                required
+              >
+                {itemSizes.map((item) => (
+                  <MenuItem value={item.id}>
+                    {item.Name} - {item.Price}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </DialogContent>
+          <DialogActions>
             <Button
               sx={{
                 backgroundColor: colors.greenAccent[700],
@@ -161,13 +214,14 @@ const TextOrderItemModal = () => {
                 fontWeight: "bold",
                 padding: "10px 20px",
               }}
-              onClick={checkItem}
+              type="submit"
             >
-              Check Item
+              Add Item to Shopping Cart
             </Button>
           </DialogActions>
         </form>
       </Dialog>
+            */}
     </>
   );
 };
