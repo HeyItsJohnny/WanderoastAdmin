@@ -14,7 +14,18 @@ import {
   List,
 } from "@mui/material";
 import { ColorModeContext, useMode, tokens } from "../../theme";
-import { collection, query, onSnapshot, orderBy } from "firebase/firestore";
+import {
+  collection,
+  query,
+  onSnapshot,
+  orderBy,
+  doc,
+  getDoc,
+} from "firebase/firestore";
+import { ShoppingCartItem } from "../Systems/shoppingCartModel";
+import { nanoid } from "nanoid";
+import { DeleteCart, AddCart } from "../Systems/cartSystem";
+import { useDispatch } from "react-redux";
 
 //MUI
 import Dialog from "@mui/material/Dialog";
@@ -36,16 +47,31 @@ const TextOrderItemModal = () => {
   const [items, setItems] = useState([]);
   const [itemSizes, setItemSizes] = useState([]);
 
-  const [showItemSelection, setShowItemSelection] = useState(false);
-  const [showItemSizeSelection, setShowItemSizeSelection] = useState(false);
+  const [showSelection, setShowSelection] = useState(false);
   const [selectedItem, setSelectedItem] = useState("");
   const [selectedItemSize, setSelectedItemSize] = useState("");
 
-  const handleItemSelectionClose = () => setShowItemSelection(false);
-  const handleItemSelectionShow = () => setShowItemSelection(true);
+  const [item, setItem] = useState({});
+  const [itemSize, setItemSize] = useState({});
 
-  const handleItemSizeSelectionClose = () => setShowItemSizeSelection(false);
-  const handleItemSizeSelectionShow = () => setShowItemSizeSelection(true);
+  const handleClose = () => setShowSelection(false);
+  const handleShow = () => setShowSelection(true);
+
+  //Shopping Cart -
+  const dispatch = useDispatch();
+  var newCartItem = ShoppingCartItem(
+    nanoid(),
+    "",
+    "",
+    "",
+    0,
+    "",
+    0,
+    0,
+    true,
+    ""
+  );
+  //Shopping Cart +
 
   const fetchItemData = async () => {
     const itemsCollection = query(collection(db, "items"), orderBy("Name"));
@@ -65,7 +91,10 @@ const TextOrderItemModal = () => {
   };
 
   const fetchItemSizeData = async (itemid) => {
-    const itemSizesCollection = query(collection(db, "items",itemid,"sizes"), orderBy("Name"));
+    const itemSizesCollection = query(
+      collection(db, "items", itemid, "sizes"),
+      orderBy("Name")
+    );
     onSnapshot(itemSizesCollection, (querySnapshot) => {
       const itemSizeList = [];
       querySnapshot.forEach((doc) => {
@@ -77,8 +106,6 @@ const TextOrderItemModal = () => {
         itemSizeList.push(itemSizeData);
       });
       setItemSizes(itemSizeList);
-      handleItemSelectionClose();
-      handleItemSizeSelectionShow();
     });
   };
 
@@ -86,32 +113,56 @@ const TextOrderItemModal = () => {
     fetchItemData();
   }, []);
 
-  const handleItemSelectionSubmit = (e) => {
-    //e.preventDefault();
-    //console.log("2. SELECTED ITEM: " + selectedItem);
-    fetchItemSizeData(selectedItem);
-    //selectedItem("");
-  };
-
-  const handleItemSizeSelectionSubmit = (e) => {
-    //e.preventDefault();
-    //console.log("2. SELECTED ITEM: " + selectedItem);
-    //fetchItemSizeData(selectedItem);
-    //selectedItem("");
-  };
-
   const handleItemSelectionChange = (event) => {
     setSelectedItem(event.target.value);
-
+    getSelectedItem(event.target.value);
+    fetchItemSizeData(event.target.value);
   };
 
   const handleItemSizeSelectionChange = (event) => {
-    setSelectedItem(event.target.value);
-
+    setSelectedItemSize(event.target.value);
+    getSelectedItemSize(selectedItem, event.target.value);
   };
 
-  const checkItem = () => {
-    console.log("3. SELECTED ITEM: " + selectedItem);
+  const handleReset = () => {
+    setSelectedItem("");
+    setSelectedItemSize("");
+    handleClose();
+  };
+
+  const getSelectedItem = async (itemID) => {
+    try {
+      const itemRef = doc(db, "items", itemID);
+      const itemSnap = await getDoc(itemRef);
+      if (itemSnap.exists()) {
+        setItem(itemSnap.data());
+      }
+    } catch (err) {
+      alert(err);
+    }
+  };
+
+  const getSelectedItemSize = async (itemID, itemSizeID) => {
+    try {
+      const itemSizeRef = doc(db, "items", itemID, "sizes", itemSizeID);
+      const itemSizeSnap = await getDoc(itemSizeRef);
+      if (itemSizeSnap.exists()) {
+        setItemSize(itemSizeSnap.data());
+      }
+    } catch (err) {
+      alert(err);
+    }
+  };
+
+  function addToCart() {
+    newCartItem.itemID = selectedItem;
+    newCartItem.itemShoppingCartID = item.ItemShoppingCartID;
+    newCartItem.name = item.Name;
+    newCartItem.quantity = 1;
+    newCartItem.size = itemSize.Name;
+    newCartItem.unitprice = itemSize.Price;
+    newCartItem.lineamount = itemSize.Price * 1;
+    newCartItem.imageURL = item.ImageFilePath;
   }
 
   return (
@@ -138,90 +189,62 @@ const TextOrderItemModal = () => {
             padding: "10px 20px",
           }}
           onClick={() => {
-            handleItemSelectionShow();
+            handleShow();
           }}
         >
           Add Item
         </Button>
       </Box>
-      <Dialog open={showItemSelection} onClose={handleItemSelectionClose}>
-        <form onSubmit={handleItemSelectionSubmit}>
-          <DialogTitle>Add to Shopping Cart</DialogTitle>
-          <DialogContent>
-            <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Item</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={selectedItem}
-                label="Item"
-                onChange={handleItemSelectionChange}
-                required
-              >
-                {items.map((item) => (
-                  <MenuItem value={item.id}>
-                    {item.Name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </DialogContent>
-          <DialogActions>
-            <Button
-              sx={{
-                backgroundColor: colors.greenAccent[700],
-                color: colors.grey[100],
-                fontSize: "14px",
-                fontWeight: "bold",
-                padding: "10px 20px",
-              }}
-              type="submit"
+      <Dialog open={showSelection} onClose={handleClose}>
+        <DialogTitle>Add to Shopping Cart</DialogTitle>
+        <DialogContent>
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Item</InputLabel>
+            <Select
+              id="demo-simple-select"
+              value={selectedItem}
+              label="Item"
+              onChange={handleItemSelectionChange}
+              required
             >
-              Choose Size
-            </Button>
-          </DialogActions>
-        </form>
-      </Dialog>
-      {/*
-      <Dialog open={showItemSizeSelection} onClose={handleItemSizeSelectionClose}>
-        <form onSubmit={handleItemSizeSelectionSubmit}>
-          <DialogTitle>Choose Size</DialogTitle>
-          <DialogContent>
-            <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Sizes</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={selectedItemSize}
-                label="Item"
-                onChange={handleItemSizeSelectionChange}
-                required
-              >
-                {itemSizes.map((item) => (
-                  <MenuItem value={item.id}>
-                    {item.Name} - {item.Price}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </DialogContent>
-          <DialogActions>
-            <Button
-              sx={{
-                backgroundColor: colors.greenAccent[700],
-                color: colors.grey[100],
-                fontSize: "14px",
-                fontWeight: "bold",
-                padding: "10px 20px",
-              }}
-              type="submit"
+              {items.map((item) => (
+                <MenuItem value={item.id}>{item.Name}</MenuItem>
+              ))}
+            </Select>
+            <Select
+              id="demo-simple-select"
+              value={selectedItemSize}
+              label="Size"
+              onChange={handleItemSizeSelectionChange}
+              required
             >
-              Add Item to Shopping Cart
-            </Button>
-          </DialogActions>
-        </form>
+              {itemSizes.map((item) => (
+                <MenuItem value={item.id}>
+                  {item.Name} - ${item.Price}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            sx={{
+              backgroundColor: colors.greenAccent[700],
+              color: colors.grey[100],
+              fontSize: "14px",
+              fontWeight: "bold",
+              padding: "10px 20px",
+            }}
+            onClick={() => {
+              addToCart();
+              dispatch(AddCart(newCartItem));
+              handleReset();
+            }}
+          >
+            Choose Size
+          </Button>
+        </DialogActions>
       </Dialog>
-            */}
     </>
   );
 };

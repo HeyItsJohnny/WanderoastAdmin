@@ -92,7 +92,6 @@ const TextOrderShoppingCart = ({ nextStep, backStep, shippingData }) => {
 
   return (
     <>
-      {/*
       <List disablePadding>
         <ListItem style={{ padding: "10px 0" }}>
           <ListItemText
@@ -114,11 +113,12 @@ const TextOrderShoppingCart = ({ nextStep, backStep, shippingData }) => {
           />
         </ListItem>
       </List>
-    */}
       <TextOrderItemModal />
+      {/*
       {items.map((item) => (
         <TextOrderShoppingCartItem item={item} />
       ))}
+      */}
       <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
         <Button
           sx={{
