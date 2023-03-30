@@ -1,19 +1,9 @@
 import React, { useState, useEffect } from "react";
 import {
   Box,
-  CssBaseline,
-  ThemeProvider,
   Button,
-  Stepper,
-  Typography,
-  Step,
-  StepLabel,
-  Paper,
-  ListItem,
-  ListItemText,
-  List,
 } from "@mui/material";
-import { ColorModeContext, useMode, tokens } from "../../theme";
+import { useMode, tokens } from "../../theme";
 import {
   collection,
   query,
@@ -24,14 +14,13 @@ import {
 } from "firebase/firestore";
 import { ShoppingCartItem } from "../Systems/shoppingCartModel";
 import { nanoid } from "nanoid";
-import { DeleteCart, AddCart } from "../Systems/cartSystem";
+import { ResetCart, AddCart } from "../Systems/cartSystem";
 import { useDispatch } from "react-redux";
 
 //MUI
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
@@ -127,6 +116,8 @@ const TextOrderItemModal = () => {
   const handleReset = () => {
     setSelectedItem("");
     setSelectedItemSize("");
+    setItem({});
+    setItemSize({});
     handleClose();
   };
 
@@ -160,7 +151,7 @@ const TextOrderItemModal = () => {
     newCartItem.name = item.Name;
     newCartItem.quantity = 1;
     newCartItem.size = itemSize.Name;
-    newCartItem.unitprice = itemSize.Price;
+    newCartItem.unitprice = itemSize.Price * 1;
     newCartItem.lineamount = itemSize.Price * 1;
     newCartItem.imageURL = item.ImageFilePath;
   }
@@ -175,6 +166,9 @@ const TextOrderItemModal = () => {
             fontSize: "14px",
             fontWeight: "bold",
             padding: "10px 20px",
+          }}
+          onClick={() => {
+            dispatch(ResetCart());
           }}
         >
           Reset Cart
@@ -241,7 +235,7 @@ const TextOrderItemModal = () => {
               handleReset();
             }}
           >
-            Choose Size
+            Add Item
           </Button>
         </DialogActions>
       </Dialog>

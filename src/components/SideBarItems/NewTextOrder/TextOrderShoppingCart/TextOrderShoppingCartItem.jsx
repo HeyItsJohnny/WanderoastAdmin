@@ -1,40 +1,35 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
-  Box,
-  CssBaseline,
-  ThemeProvider,
   Button,
-  Stepper,
   Typography,
-  Step,
-  StepLabel,
-  Paper,
   ListItem,
   ListItemText,
-  List,
 } from "@mui/material";
-import { ColorModeContext, useMode, tokens } from "../../../../theme";
-import { collection, query, onSnapshot } from "firebase/firestore";
+import { useMode, tokens } from "../../../../theme";
 
 //Firebase
-import { db } from "../../../../Firebase/firebase";
 
-const TextOrderShoppingCartItem = ({ item }) => {
+const TextOrderShoppingCartItem = ({ cart }) => {
   const [theme, colorMode] = useMode();
   const colors = tokens(theme.palette.mode);
+
+  function currencyFormat(num) {
+    return "$" + num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+  }
   
   return (
     <>
-      <ListItem style={{ padding: "10px 0" }} key={item.id}>
+      <ListItem style={{ padding: "10px 0" }} key={cart.id}>
         <ListItemText
-          primary={item.Name}
+          primary={cart.name}
           secondary={
             <div>
-              <div>Quantity: 0</div>
+              <div>Quantity: {cart.quantity}</div>
+              <div>Size: {cart.size}</div>
             </div>
           }
         />
-        <Typography variant="body2">$0.00</Typography>
+        <Typography variant="body2">{currencyFormat(cart.lineamount)}</Typography>
       </ListItem>
       <ListItem style={{ padding: "10px 0" }}>
         <Button
