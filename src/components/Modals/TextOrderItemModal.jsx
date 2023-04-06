@@ -11,6 +11,7 @@ import {
   orderBy,
   doc,
   getDoc,
+  where
 } from "firebase/firestore";
 import { ShoppingCartItem } from "../Systems/shoppingCartModel";
 import { nanoid } from "nanoid";
@@ -34,14 +35,21 @@ const TextOrderItemModal = () => {
   const [theme, colorMode] = useMode();
   const colors = tokens(theme.palette.mode);
   const [items, setItems] = useState([]);
+  const [giftBoxItems, setGiftBoxItems] = useState([]);
   const [itemSizes, setItemSizes] = useState([]);
 
   const [showSelection, setShowSelection] = useState(false);
   const [selectedItem, setSelectedItem] = useState("");
   const [selectedItemSize, setSelectedItemSize] = useState("");
 
+  const [selectedGiftBoxItem1, setSelectedGiftBoxItem1] = useState("");
+  const [selectedGiftBoxItem2, setSelectedGiftBoxItem2] = useState("");
+
   const [item, setItem] = useState({});
   const [itemSize, setItemSize] = useState({});
+
+  const [giftBoxItem1, setGitBoxItem1] = useState({});
+  const [giftBoxItem2, setGitBoxItem2] = useState({});
 
   const handleClose = () => setShowSelection(false);
   const handleShow = () => setShowSelection(true);
@@ -79,6 +87,23 @@ const TextOrderItemModal = () => {
     });
   };
 
+  const fetchNonGBItemData = async () => {
+    const itemsCollection = query(collection(db, "items"), where("ItemType","==","Coffee Beans"));
+    onSnapshot(itemsCollection, (querySnapshot) => {
+      const itemsList = [];
+      querySnapshot.forEach((doc) => {
+        var itemData = {
+          id: doc.id,
+          ItemID: doc.data().ItemShoppingCartID,
+          Name: doc.data().Name,
+          ItemType: doc.data().ItemType,
+        };
+        itemsList.push(itemData);
+      });
+      setGiftBoxItems(itemsList);
+    });
+  };
+
   const fetchItemSizeData = async (itemid) => {
     const itemSizesCollection = query(
       collection(db, "items", itemid, "sizes"),
@@ -100,6 +125,7 @@ const TextOrderItemModal = () => {
 
   useEffect(() => {
     fetchItemData();
+    fetchNonGBItemData();
   }, []);
 
   const handleItemSelectionChange = (event) => {
@@ -113,9 +139,21 @@ const TextOrderItemModal = () => {
     getSelectedItemSize(selectedItem, event.target.value);
   };
 
+  const handleGBItem1SelectionChange = (event) => {
+    setSelectedGiftBoxItem1(event.target.value);
+    //getSelectedItemSize(selectedItem, event.target.value);
+  };
+
+  const handleGBItem2SelectionChange = (event) => {
+    setSelectedGiftBoxItem2(event.target.value);
+    //getSelectedItemSize(selectedItem, event.target.value);
+  };
+
   const handleReset = () => {
     setSelectedItem("");
     setSelectedItemSize("");
+    setSelectedGiftBoxItem1("");
+    setSelectedGiftBoxItem2("");
     setItem({});
     setItemSize({});
     handleClose();
@@ -148,7 +186,13 @@ const TextOrderItemModal = () => {
   function addToCart() {
     newCartItem.itemID = selectedItem;
     newCartItem.itemShoppingCartID = item.ItemShoppingCartID;
-    newCartItem.name = item.Name;
+
+    if (item.ItemType === "Gift Box") {
+      newCartItem.name = item.Name + " (Item 1: " + selectedGiftBoxItem1 + " Item 2: " + selectedGiftBoxItem2 + ")";
+    } else {
+      newCartItem.name = item.Name;
+    }
+    
     newCartItem.quantity = 1;
     newCartItem.size = itemSize.Name;
     newCartItem.unitprice = itemSize.Price * 1;
@@ -218,6 +262,29 @@ const TextOrderItemModal = () => {
                 </MenuItem>
               ))}
             </Select>
+            <DialogTitle>Use for Giftbox</DialogTitle>
+            <Select
+              id="demo-simple-select"
+              value={selectedGiftBoxItem1}
+              label="Gift Box Item 1"
+              onChange={handleGBItem1SelectionChange}
+              required
+            >
+              {giftBoxItems.map((item) => (
+                <MenuItem value={item.Name}>{item.Name}</MenuItem>
+              ))}
+            </Select>
+            <Select
+              id="demo-simple-select"
+              value={selectedGiftBoxItem2}
+              label="Gift Box Item 2"
+              onChange={handleGBItem2SelectionChange}
+              required
+            >
+              {giftBoxItems.map((item) => (
+                <MenuItem value={item.Name}>{item.Name}</MenuItem>
+              ))}
+            </Select>
           </FormControl>
         </DialogContent>
         <DialogActions>
@@ -230,9 +297,25 @@ const TextOrderItemModal = () => {
               padding: "10px 20px",
             }}
             onClick={() => {
-              addToCart();
-              dispatch(AddCart(newCartItem));
-              handleReset();
+              if (item.ItemType === "Gift Box") {
+                if (selectedGiftBoxItem1 === "") {
+                  alert("Please enter a coffee for the giftbox.");
+                } else if (selectedGiftBoxItem2 === "") {
+                  alert("Please enter a 2nd coffee for the giftbox.");
+                } else {
+                  addToCart();
+                  dispatch(AddCart(newCartItem));
+                  handleReset();
+                }
+              } else {
+                if (selectedItemSize === "") {
+                  alert("Please enter a size.");
+                } else {
+                  addToCart();
+                  dispatch(AddCart(newCartItem));
+                  handleReset();
+                }
+              }
             }}
           >
             Add Item

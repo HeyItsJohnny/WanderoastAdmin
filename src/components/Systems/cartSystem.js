@@ -41,21 +41,21 @@ const cartSystem = createSlice({
             var item = state.cart.find(cart => cart.id === action.payload.id);
             item.quantity += 1;
             state.subtotal += action.payload.unitprice * 1;
-            state.totalquantity += action.payload.quantity * 1;
+            state.totalquantity += 1;
             state.total = state.subtotal;
         },
         DeleteOneToCart:(state,action)=> {
             if (action.payload.quantity - 1 === 0 ) {
                 state.cart = state.cart.filter((item) => item.id !== action.payload.id);
                 state.subtotal -= action.payload.unitprice * 1;
-                state.totalquantity -= action.payload.quantity * 1;
+                state.totalquantity -= 1;
                 state.total = state.subtotal;
                 state.discount = 0;     //Reset the discount
             } else {
                 var item = state.cart.find(cart => cart.id === action.payload.id);
                 item.quantity -= 1;
                 state.subtotal -= action.payload.unitprice * 1;
-                state.totalquantity -= action.payload.quantity * 1;
+                state.totalquantity -= 1;
                 state.total = state.subtotal;
                 state.discount = 0;     //Reset the discount
             } 

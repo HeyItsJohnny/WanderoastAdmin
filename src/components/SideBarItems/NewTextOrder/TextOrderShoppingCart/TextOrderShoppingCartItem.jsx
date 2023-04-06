@@ -4,14 +4,18 @@ import {
   Typography,
   ListItem,
   ListItemText,
+  Box
 } from "@mui/material";
 import { useMode, tokens } from "../../../../theme";
+import { AddOneToCart, DeleteOneToCart } from '../../../Systems/cartSystem';
+import { useDispatch } from 'react-redux';
 
 //Firebase
 
 const TextOrderShoppingCartItem = ({ cart }) => {
   const [theme, colorMode] = useMode();
   const colors = tokens(theme.palette.mode);
+  const dispatch = useDispatch();
 
   function currencyFormat(num) {
     return "$" + num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
@@ -43,11 +47,12 @@ const TextOrderShoppingCartItem = ({ cart }) => {
             padding: "5px 10px",
           }}
           onClick={() => {
-            alert("Subtract One");
+            dispatch(DeleteOneToCart(cart));
           }}
         >
           Subtract
         </Button>
+        <Box sx={{ flex: "1 1 auto" }} />
         <Button
           type="button"
           size="small"
@@ -59,7 +64,7 @@ const TextOrderShoppingCartItem = ({ cart }) => {
             padding: "5px 10px",
           }}
           onClick={() => {
-            alert("Add One");
+            dispatch(AddOneToCart(cart));
           }}
         >
           Add
