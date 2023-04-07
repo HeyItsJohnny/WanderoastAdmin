@@ -33,7 +33,7 @@ const TextOrderShoppingCartItem = ({ cart }) => {
             </div>
           }
         />
-        <Typography variant="body2">{currencyFormat(cart.lineamount)}</Typography>
+        <Typography variant="body2">Price per Unit: {currencyFormat(cart.lineamount)}</Typography>
       </ListItem>
       <ListItem style={{ padding: "10px 0" }}>
         <Button

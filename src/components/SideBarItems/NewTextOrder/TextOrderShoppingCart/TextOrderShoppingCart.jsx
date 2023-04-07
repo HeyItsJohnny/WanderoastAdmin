@@ -1,25 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import {
   Box,
-  CssBaseline,
-  ThemeProvider,
   Button,
-  Stepper,
-  Typography,
-  Step,
-  StepLabel,
-  Paper,
   ListItem,
   ListItemText,
   List,
 } from "@mui/material";
-import { ColorModeContext, useMode, tokens } from "../../../../theme";
-import { collection, query, onSnapshot, orderBy } from "firebase/firestore";
+import { useMode, tokens } from "../../../../theme";
 import TextOrderShoppingCartItem from "./TextOrderShoppingCartItem";
 import TextOrderItemModal from "../../../Modals/TextOrderItemModal";
-
-//Firebase
-import { db } from "../../../../Firebase/firebase";
 
 //Cart System 
 import { useSelector } from 'react-redux';

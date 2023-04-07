@@ -48,9 +48,6 @@ const TextOrderItemModal = () => {
   const [item, setItem] = useState({});
   const [itemSize, setItemSize] = useState({});
 
-  const [giftBoxItem1, setGitBoxItem1] = useState({});
-  const [giftBoxItem2, setGitBoxItem2] = useState({});
-
   const handleClose = () => setShowSelection(false);
   const handleShow = () => setShowSelection(true);
 

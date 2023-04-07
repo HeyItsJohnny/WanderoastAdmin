@@ -22,7 +22,7 @@ import SelectCustomer from "../SelectCustomer";
 import ShippingAddress from "../ShippingAddress";
 import TextOrderShoppingCart from "../TextOrderShoppingCart/TextOrderShoppingCart";
 import Payment from "../Payment";
-import Review from "../Review";
+import Review from "../Review/Review";
 
 //Firebase
 import { db } from "../../../../Firebase/firebase";
@@ -76,9 +76,9 @@ const NewTextOrder = () => {
       case 1:
         return <ShippingAddress setAddressAndContinue={setAddressAndContinue} backStep={backStep} customerID={customerID} />;
       case 2:
-        return <TextOrderShoppingCart nextStep={nextStep} backStep={backStep} shippingData={shippingData} />;
+        return <TextOrderShoppingCart nextStep={nextStep} backStep={backStep}  />;
       case 3:
-        return <Review nextStep={nextStep} backStep={backStep} />;
+        return <Review nextStep={nextStep} backStep={backStep} shippingData={shippingData} />;
       case 4:
         return <Payment lastStep={lastStep} backStep={backStep} />;
       default:
