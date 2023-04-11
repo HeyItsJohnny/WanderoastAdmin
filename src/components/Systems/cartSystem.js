@@ -40,6 +40,7 @@ const cartSystem = createSlice({
         AddOneToCart:(state,action)=> {
             var item = state.cart.find(cart => cart.id === action.payload.id);
             item.quantity += 1;
+            item.lineamount = item.quantity * item.unitprice;
             state.subtotal += action.payload.unitprice * 1;
             state.totalquantity += 1;
             state.total = state.subtotal;
@@ -54,6 +55,7 @@ const cartSystem = createSlice({
             } else {
                 var item = state.cart.find(cart => cart.id === action.payload.id);
                 item.quantity -= 1;
+                item.lineamount = item.quantity * item.unitprice;
                 state.subtotal -= action.payload.unitprice * 1;
                 state.totalquantity -= 1;
                 state.total = state.subtotal;

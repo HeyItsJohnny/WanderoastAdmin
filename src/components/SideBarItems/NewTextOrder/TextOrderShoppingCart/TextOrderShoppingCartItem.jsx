@@ -13,7 +13,7 @@ import { useDispatch } from 'react-redux';
 //Firebase
 
 const TextOrderShoppingCartItem = ({ cart }) => {
-  const [theme, colorMode] = useMode();
+  const [theme ] = useMode();
   const colors = tokens(theme.palette.mode);
   const dispatch = useDispatch();
 
@@ -25,15 +25,15 @@ const TextOrderShoppingCartItem = ({ cart }) => {
     <>
       <ListItem style={{ padding: "10px 0" }} key={cart.id}>
         <ListItemText
-          primary={cart.name}
+          primary={cart.name + " (Size: " + cart.size + ")"}
           secondary={
             <div>
               <div>Quantity: {cart.quantity}</div>
-              <div>Size: {cart.size}</div>
+              <div>Unit Price: {currencyFormat(cart.unitprice)}</div>
             </div>
           }
         />
-        <Typography variant="body2">Price per Unit: {currencyFormat(cart.lineamount)}</Typography>
+        <Typography variant="body2">Total Amount: {currencyFormat(cart.lineamount)}</Typography>
       </ListItem>
       <ListItem style={{ padding: "10px 0" }}>
         <Button
