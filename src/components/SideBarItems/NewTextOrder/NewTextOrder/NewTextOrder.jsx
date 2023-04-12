@@ -80,7 +80,7 @@ const NewTextOrder = () => {
       case 3:
         return <Review nextStep={nextStep} backStep={backStep} shippingData={shippingData} />;
       case 4:
-        return <Payment lastStep={lastStep} backStep={backStep} />;
+        return <Payment lastStep={lastStep} backStep={backStep} customerID={customerID}/>;
       default:
         return <h1>Something went wrong.</h1>;
     }
